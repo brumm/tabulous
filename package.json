@@ -1,30 +1,39 @@
 {
-  "name": "chrome-extension-webpack",
+  "name": "tabulous",
   "version": "0.0.1",
-  "description": "A boilerplate to chrome extension with webpack",
+  "description": "a chrome extension thingie to wrangle your tabs",
   "scripts": {
-    "build": "node utils/build.js",
+    "build": "NODE_ENV='production' node utils/build.js",
     "start": "node utils/webserver.js"
   },
   "dependencies": {
+    "delay": "^2.0.0",
+    "glamor": "^2.20.40",
+    "glamorous": "^4.11.0",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-broadcast": "^0.5.2",
+    "react-dom": "^15.3.2",
+    "react-virtualized": "^9.12.0",
+    "then-chrome": "^1.0.7"
   },
   "devDependencies": {
-    "clean-webpack-plugin": "^0.1.17",
-    "copy-webpack-plugin": "^4.2.0",
-    "style-loader": "^0.13.0",
-    "webpack": "2.2.1",
-    "webpack-dev-server": "^2.3.0",
-    "write-file-webpack-plugin": "3.4.2",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.16.0",
     "babel-preset-react-hmre": "^1.1.1",
+    "clean-webpack-plugin": "^0.1.17",
+    "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.11.2",
     "fs-extra": "^0.30.0",
     "html-loader": "^0.4.5",
-    "html-webpack-plugin": "2.24.1"
+    "html-webpack-plugin": "2.24.1",
+    "style-loader": "^0.13.0",
+    "webpack": "2.2.1",
+    "webpack-dev-server": "^2.3.0",
+    "write-file-webpack-plugin": "3.4.2"
   }
 }

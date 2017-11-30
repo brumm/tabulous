@@ -1,0 +1,49 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+  outline: none;
+  cursor: default;
+  overflow: hidden;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+html {
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial,
+    sans-serif;
+}
+
+body {
+  color: #333;
+}
+
+#app-container {
+  min-width: 300px;
+  min-height: 45px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+textarea,
+input {
+  cursor: text;
+  font: inherit;
+  color: inherit;
+}
+
+textarea {
+  width: 100%;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
