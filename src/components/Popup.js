@@ -47,9 +47,11 @@ export default class Popup extends React.Component {
     } = this.props
     const { selectedIndex, filterText, markedTabs } = this.state
     const listHeight = listItemHeight * maxVisibleResults
-    const filteredTabs = tabs.filter(
-      ({ title, url }) => title.match(filterText) || url.match(filterText)
-    )
+    const filteredTabs = tabs
+      .filter(
+        ({ title, url }) => title.match(filterText) || url.match(filterText)
+      )
+      .sort((a, b) => a.index - b.index)
 
     return (
       <Container>
