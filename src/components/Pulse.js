@@ -18,3 +18,5 @@ const Pulse = glamorous.div(({ delay = '0s', duration = '1s' }) => ({
   animationIterationCount: 'infinite',
   opacity: 0,
 }))
+
+export default Pulse
