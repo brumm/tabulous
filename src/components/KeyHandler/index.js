@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'proptypes'
 
 import { KEYDOWN, KEYPRESS, KEYUP } from './constants'
 import { isInput, matchesKeyboardEvent, eventKey } from './utils'
@@ -9,15 +10,15 @@ import { isInput, matchesKeyboardEvent, eventKey } from './utils'
 
 export default class KeyHandler extends React.Component {
   static propTypes = {
-    keyValue: React.PropTypes.oneOfType([
-      React.PropTypes.array,
-      React.PropTypes.string,
-      React.PropTypes.instanceOf(RegExp),
+    keyValue: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.string,
+      PropTypes.instanceOf(RegExp),
     ]),
-    keyCode: React.PropTypes.number,
-    preventDefault: React.PropTypes.bool,
-    keyEventName: React.PropTypes.oneOf([KEYDOWN, KEYPRESS, KEYUP]),
-    onKeyHandle: React.PropTypes.func,
+    keyCode: PropTypes.number,
+    preventDefault: PropTypes.bool,
+    keyEventName: PropTypes.oneOf([KEYDOWN, KEYPRESS, KEYUP]),
+    onKeyHandle: PropTypes.func,
   }
 
   static defaultProps = {
