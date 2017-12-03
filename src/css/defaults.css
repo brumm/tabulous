@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 * {
   box-sizing: border-box;
   user-select: none;
@@ -36,6 +38,23 @@ input {
   cursor: text;
   font: inherit;
   color: inherit;
+}
+
+input[type='color'] {
+  -webkit-appearance: none;
+  background: none;
+  padding: 0;
+  border: none;
+  width: 30px;
+  height: 30px;
+  /*flex-grow: 0;*/
+}
+input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type='color']::-webkit-color-swatch {
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 textarea {
