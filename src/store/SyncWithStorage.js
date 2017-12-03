@@ -18,6 +18,7 @@ export default class SyncWithStorage extends React.Component {
           ),
         })
     )
+
     storageGet(null).then(settings =>
       this.props.dispatch({
         type: 'SETTINGS_CHANGE',
@@ -25,5 +26,6 @@ export default class SyncWithStorage extends React.Component {
       })
     )
   }
+
   render = () => this.props.children
 }

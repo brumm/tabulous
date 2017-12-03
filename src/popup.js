@@ -14,6 +14,8 @@ import reducer, { initialState } from 'store/reducer'
 import Popup from 'components/Popup'
 
 getCurrentTab()
+  // the chrome extension window collapses to a tiny size
+  // if we render immediately, so we'll delay by 10ms :/
   .then(delay(10))
   .then(({ index }) =>
     render(
