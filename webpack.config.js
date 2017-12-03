@@ -33,7 +33,7 @@ var options = {
   entry: {
     popup: path.join(__dirname, 'src', 'popup.js'),
     options: path.join(__dirname, 'src', 'options.js'),
-    eventPage: path.join(__dirname, 'src', 'eventPage.js'),
+    // eventPage: path.join(__dirname, 'src', 'eventPage.js'),
   },
   output: {
     path: path.join(__dirname, 'build'),
