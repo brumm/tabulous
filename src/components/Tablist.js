@@ -22,6 +22,7 @@ const Icon = ({ size = 24, url }) => (
 
 const ListItem = ({
   id,
+  windowId,
   selected,
   icon,
   title,
@@ -41,7 +42,7 @@ const ListItem = ({
         padding="0px 10px"
         backgroundColor={selected && settings.highlightColor}
         boxShadow={marked && `5px 0 0 ${settings.selectedColor} inset`}
-        onClick={() => onSelect(id)}
+        onClick={() => onSelect({ id, windowId })}
         style={style}
       >
         {children || [
@@ -137,6 +138,7 @@ export default class Tablist extends React.Component {
       <ListItem
         key={key}
         id={tab.id}
+        windowId={tab.windowId}
         index={tab.index}
         onSelect={this.props.onSelect}
         selected={isSelected}

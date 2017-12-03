@@ -52,6 +52,7 @@ export default class Popup extends React.Component {
         ({ title, url }) => title.match(filterText) || url.match(filterText)
       )
       .sort((a, b) => a.index - b.index)
+      .sort((a, b) => a.windowId - b.windowId)
 
     return (
       <Container>
@@ -75,7 +76,7 @@ export default class Popup extends React.Component {
 
         <KeyHandler
           keyValue="Enter"
-          onKeyHandle={() => selectTab(filteredTabs[selectedIndex].id)}
+          onKeyHandle={() => selectTab(filteredTabs[selectedIndex])}
         />
 
         <KeyHandler
