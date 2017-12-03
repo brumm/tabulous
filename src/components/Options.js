@@ -6,6 +6,9 @@ import Popup from 'components/Popup'
 import { Input, FancyShadow } from 'components/Input'
 import Tablist from 'components/Tablist'
 
+const MAX_POPUP_WIDTH = 800
+const MAX_POPUP_HEIGHT = 600
+
 const Container = glamorous.div({
   display: 'flex',
 })
@@ -29,6 +32,7 @@ const Settings = glamorous.div({
 const SettingsFrame = glamorous.div({
   width: '35vw',
   backgroundColor: '#fafafa',
+  fontFamily: 'Roboto',
 })
 
 const FakePopupFrame = glamorous.div({
@@ -44,7 +48,7 @@ const SettingsInput = glamorous.input({
 })
 
 const Value = glamorous.div({
-  minWidth: 50,
+  minWidth: 70,
   textAlign: 'right',
 })
 
@@ -57,13 +61,18 @@ const Button = glamorous.button(({ theme }) => ({
   height: 40,
 }))
 
-const Setting = ({ noBorder, label, children }) => (
-  <Div margin={20} padding={5} borderBottom={noBorder || '1px solid #dddddd'}>
+const Setting = ({ noBorder, label, children, style }) => (
+  <Div
+    margin={20}
+    padding={10}
+    borderBottom={noBorder || '1px solid #dddddd'}
+    {...style}
+  >
     <Label display="block" textTransform="capitalize">
       {label}
     </Label>
     <Div
-      marginTop={5}
+      marginTop={10}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
@@ -134,7 +143,7 @@ export default class Options extends React.Component {
                     value: { highlightColor: value },
                   })}
               />
-              <Value />
+              <Value>{`${highlightColor}`}</Value>
             </Setting>
 
             <Setting label="selected color">
@@ -147,7 +156,22 @@ export default class Options extends React.Component {
                     value: { selectedColor: value },
                   })}
               />
-              <Value />
+              <Value>{`${selectedColor}`}</Value>
+            </Setting>
+
+            <Setting label="list width">
+              <SettingsInput
+                type="range"
+                min={200}
+                max={MAX_POPUP_WIDTH}
+                value={listWidth}
+                onChange={({ target: { valueAsNumber } }) =>
+                  dispatch({
+                    type: 'SETTINGS_CHANGE',
+                    value: { listWidth: valueAsNumber },
+                  })}
+              />
+              <Value>{`${listWidth}px`}</Value>
             </Setting>
 
             <Setting label="list item height">
@@ -169,7 +193,11 @@ export default class Options extends React.Component {
               <SettingsInput
                 type="range"
                 min={2.5}
-                max={9.5}
+                max={
+                  Math.floor(
+                    (MAX_POPUP_HEIGHT - listItemHeight) / listItemHeight
+                  ) - 1.5
+                }
                 step={1}
                 value={maxVisibleResults}
                 onChange={({ target: { valueAsNumber } }) =>
@@ -181,7 +209,7 @@ export default class Options extends React.Component {
               <Value>{maxVisibleResults}</Value>
             </Setting>
 
-            <Setting noBorder>
+            <Setting noBorder style={{ marginTop: 50 }}>
               <Button onClick={() => storageSet(this.props.settings)}>
                 Save
               </Button>
