@@ -3,8 +3,7 @@ import { List } from 'react-virtualized'
 import glamorous, { Div } from 'glamorous'
 import * as glamor from 'glamor'
 
-import 'img/icon-34.png'
-import defaultIcon from 'img/icon-128.png'
+import defaultIcon from 'img/icon-48.png'
 import Pulse from 'components/Pulse'
 import { AppState } from 'store/AppState'
 
