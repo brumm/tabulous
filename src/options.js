@@ -9,15 +9,18 @@ import { AppStateProvider, AppState, Middleware } from 'store/AppState'
 import SyncWithStorage from 'store/SyncWithStorage'
 import reducer, { initialState } from 'store/reducer'
 import Options from 'components/Options'
+import ErrorBoundary from 'components/ErrorBoundary'
 
 render(
   <AppStateProvider defaultValue={initialState} reducer={reducer}>
     <Middleware component={SyncWithStorage}>
       <AppState>
         {({ value: { settings }, dispatch }) => (
-          <ThemeProvider theme={settings}>
-            <Options settings={settings} dispatch={dispatch} />
-          </ThemeProvider>
+          <ErrorBoundary settings={settings}>
+            <ThemeProvider theme={settings}>
+              <Options settings={settings} dispatch={dispatch} />
+            </ThemeProvider>
+          </ErrorBoundary>
         )}
       </AppState>
     </Middleware>

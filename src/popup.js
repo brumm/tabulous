@@ -18,6 +18,7 @@ import SyncWithCurrentWindowTabs from 'store/SyncWithCurrentWindowTabs'
 import SyncWithStorage from 'store/SyncWithStorage'
 import reducer, { initialState } from 'store/reducer'
 import Popup from 'components/Popup'
+import ErrorBoundary from 'components/ErrorBoundary'
 
 getCurrentTab()
   // the chrome extension window collapses to a tiny size
@@ -30,9 +31,15 @@ getCurrentTab()
           <Middleware component={SyncWithCurrentWindowTabs}>
             <AppState>
               {({ value: { tabs, settings } }) => (
-                <ThemeProvider theme={settings}>
-                  <Popup initialIndex={index} tabs={tabs} settings={settings} />
-                </ThemeProvider>
+                <ErrorBoundary settings={settings}>
+                  <ThemeProvider theme={settings}>
+                    <Popup
+                      initialIndex={index}
+                      tabs={tabs}
+                      settings={settings}
+                    />
+                  </ThemeProvider>
+                </ErrorBoundary>
               )}
             </AppState>
           </Middleware>

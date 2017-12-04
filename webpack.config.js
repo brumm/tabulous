@@ -30,6 +30,7 @@ if (fileSystem.existsSync(secretsPath)) {
 }
 
 var options = {
+  devtool: env.NODE_ENV === 'development' && 'cheap-module-eval-source-map',
   entry: {
     popup: path.join(__dirname, 'src', 'popup.js'),
     options: path.join(__dirname, 'src', 'options.js'),
@@ -75,6 +76,7 @@ var options = {
     // expose and write the allowed env vars on the compiled bundle
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV),
+      'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
     }),
     new CopyWebpackPlugin([
       {
@@ -86,6 +88,10 @@ var options = {
               description: process.env.npm_package_description,
               version: process.env.npm_package_version,
               ...JSON.parse(content.toString()),
+              content_security_policy:
+                env.NODE_ENV === 'development'
+                  ? "script-src 'self' 'unsafe-eval' https://cdn.ravenjs.com; object-src 'self'"
+                  : "script-src 'self' https://cdn.ravenjs.com; object-src 'self'",
             })
           )
         },
@@ -103,10 +109,6 @@ var options = {
     }),
     new WriteFilePlugin(),
   ],
-}
-
-if (env.NODE_ENV === 'development') {
-  options.devtool = 'cheap-module-eval-source-map'
 }
 
 module.exports = options
