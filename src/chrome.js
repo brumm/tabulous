@@ -12,7 +12,7 @@ export const onStorageChanged = fn => chrome.storage.onChanged.addListener(fn)
 export const selectTab = ({ id, windowId }) =>
   Promise.all([
     windows.update(windowId, { focused: true }),
-    tabs.update(id, { selected: true }),
+    tabs.update(id, { active: true }),
   ])
 
 export const closeTab = (...tabIds) => tabs.remove(tabIds)

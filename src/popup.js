@@ -20,10 +20,10 @@ import reducer, { initialState } from 'store/reducer'
 import Popup from 'components/Popup'
 import ErrorBoundary from 'components/ErrorBoundary'
 
-getCurrentTab()
-  // the chrome extension window collapses to a tiny size
-  // if we render immediately, so we'll delay by 10ms :/
-  .then(delay(10))
+// the chrome extension window collapses to a tiny size
+// if we render immediately, so we'll delay by 10ms :/
+delay(10)
+  .then(getCurrentTab)
   .then(({ index }) =>
     render(
       <AppStateProvider defaultValue={initialState} reducer={reducer}>

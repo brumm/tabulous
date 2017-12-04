@@ -7,6 +7,7 @@ import { Input, FancyShadow } from 'components/Input'
 import { selectTab, closeTab } from 'chrome'
 
 const wrapAround = (value, bounds) => (value % bounds + bounds) % bounds
+const selectTabAndClosePopup = tab => selectTab(tab).then(() => window.close())
 
 const Container = glamorous.div(({ theme }) => ({
   width: theme.listWidth,
@@ -78,7 +79,8 @@ export default class Popup extends React.Component {
 
         <KeyHandler
           keyValue="Enter"
-          onKeyHandle={() => selectTab(filteredTabs[selectedIndex])}
+          onKeyHandle={() =>
+            selectTabAndClosePopup(filteredTabs[selectedIndex])}
         />
 
         <KeyHandler
@@ -129,7 +131,7 @@ export default class Popup extends React.Component {
           selectedIndex={selectedIndex}
           markedTabs={markedTabs}
           extraData={markedTabs}
-          onSelect={selectTab}
+          onSelect={selectTabAndClosePopup}
           width={listWidth}
           height={Math.min(
             listHeight,
