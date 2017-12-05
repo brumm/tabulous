@@ -25,7 +25,9 @@
     "_execute_browser_action": {
       "suggested_key": {
         "mac": "MacCtrl+Space",
-        "windows": "Ctrl+Space"
+        "windows": "Ctrl+Space",
+        "chromeos": "Ctrl+Space",
+        "linux": "Ctrl+Space"
       }
     }
   }
