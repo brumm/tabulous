@@ -104,7 +104,13 @@ export default class Popup extends React.Component {
                   filteredTabs[selectedIndex].id,
                   ...markedTabs,
                 ].filter((el, i, a) => i === a.indexOf(el))
-                closeTab(...tabIds)
+                closeTab(...tabIds).then(() => {
+                  if (selectedIndex === filteredTabs.length - 1) {
+                    this.setState({
+                      selectedIndex: selectedIndex - 1,
+                    })
+                  }
+                })
               }}
             />
 
