@@ -26,7 +26,7 @@ const selectTabAndClosePopup = tab => selectTab(tab).then(() => window.close())
 // if we render immediately, so we'll delay by 10ms :/
 delay(10)
   .then(getCurrentTab)
-  .then(({ index }) =>
+  .then(({ index, windowId }) =>
     render(
       <AppStateProvider defaultValue={initialState} reducer={reducer}>
         <Middleware component={SyncWithStorage}>
@@ -38,6 +38,7 @@ delay(10)
                     <Popup
                       forceFocus
                       initialTabIndex={index}
+                      currentWindowId={windowId}
                       tabs={tabs}
                       settings={settings}
                       actions={{ selectTabAndClosePopup, closeTab }}

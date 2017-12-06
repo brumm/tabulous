@@ -48,14 +48,17 @@ export default class Options extends React.Component {
           <FakePopupFrame>
             <Popup
               initialTabIndex={0}
+              currentWindowId={0}
               tabs={filteredTabs}
               settings={this.props.settings}
               actions={{
                 selectTabAndClosePopup() {},
                 closeTab: (...tabIds) =>
-                  this.setState({
-                    closedTabIds: [...closedTabIds, ...tabIds],
-                  }),
+                  Promise.resolve(
+                    this.setState({
+                      closedTabIds: [...closedTabIds, ...tabIds],
+                    })
+                  ),
               }}
             />
           </FakePopupFrame>

@@ -44,6 +44,7 @@ export default class Popup extends React.Component {
   render() {
     const {
       tabs,
+      currentWindowId,
       actions: { selectTabAndClosePopup, closeTab },
       settings: {
         listWidth,
@@ -63,7 +64,7 @@ export default class Popup extends React.Component {
           title.toLowerCase().match(filterText.toLowerCase()) ||
           url.toLowerCase().match(filterText.toLowerCase())
       ),
-      ['index', 'windowId']
+      [({ windowId }) => (windowId !== currentWindowId ? 1 : 0), 'index']
     )
 
     return (
