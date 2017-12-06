@@ -13,6 +13,10 @@
       "128": "icon-128.png"
     }
   },
+  "background": {
+    "scripts": ["eventPage.js"],
+    "persistent": false
+  },
   "icons": {
     "16": "icon-16.png",
     "24": "icon-24.png",

@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import glamorous, { Div } from 'glamorous'
+import ComboKeys from 'react-combokeys'
+import sortBy from 'lodash.sortby'
 
 import Tablist from 'components/Tablist'
-import KeyHandler from 'components/KeyHandler'
 import { Input, FancyShadow } from 'components/Input'
-import { selectTab, closeTab } from 'chrome'
+import { transformShortcut } from 'utils'
 
 const wrapAround = (value, bounds) => (value % bounds + bounds) % bounds
-const selectTabAndClosePopup = tab => selectTab(tab).then(() => window.close())
 
 const Container = glamorous.div(({ theme }) => ({
   width: theme.listWidth,
@@ -15,12 +15,14 @@ const Container = glamorous.div(({ theme }) => ({
 
 export default class Popup extends React.Component {
   state = {
+    focused: false,
     markedTabs: [],
     selectedIndex: this.props.initialIndex,
     filterText: '',
   }
 
-  focusInput = () => this.InputNode && this.InputNode.focus()
+  focusInput = () =>
+    this.props.forceFocus && this.InputNode && this.InputNode.focus()
   componentWillUpdate = () => this.focusInput()
   componentDidMount = () => this.focusInput()
 
@@ -29,9 +31,9 @@ export default class Popup extends React.Component {
       markedTabs: [...markedTabs, ...tabIds],
     }))
 
-  unmarkTab = id =>
+  unmarkTab = (...tabIds) =>
     this.setState(({ markedTabs }) => ({
-      markedTabs: markedTabs.filter(markedId => markedId !== id),
+      markedTabs: markedTabs.filter(markedId => !tabIds.includes(markedId)),
     }))
 
   changeIndex = (direction, bounds) =>
@@ -44,75 +46,94 @@ export default class Popup extends React.Component {
       tabs,
       initialIndex,
       loading,
-      settings: { listWidth, listItemHeight, maxVisibleResults },
+      actions: { selectTabAndClosePopup, closeTab },
+      settings: {
+        listWidth,
+        listItemHeight,
+        maxVisibleResults,
+        markAllTabsShortcut,
+        markTabShortcut,
+        closeTabSortcut,
+      },
     } = this.props
-    const { selectedIndex, filterText, markedTabs } = this.state
-    const listHeight = listItemHeight * maxVisibleResults
-    const filteredTabs = tabs
-      .filter(
+    const { selectedIndex, filterText, markedTabs, focused } = this.state
+    const listHeight = Math.ceil(listItemHeight * maxVisibleResults)
+
+    const filteredTabs = sortBy(
+      tabs.filter(
         ({ title, url }) =>
           title.toLowerCase().match(filterText.toLowerCase()) ||
           url.toLowerCase().match(filterText.toLowerCase())
-      )
-      .sort((a, b) => a.index - b.index)
-      .sort((a, b) => a.windowId - b.windowId)
+      ),
+      ['index', 'windowId']
+    )
 
     return (
       <Container>
-        <KeyHandler
-          keyValue={['ArrowUp', 'ArrowDown']}
-          onKeyHandle={({ key }) =>
-            this.changeIndex(key === 'ArrowUp' ? -1 : 1, filteredTabs.length)}
-        />
+        {focused && (
+          <Fragment>
+            <ComboKeys
+              bind={'enter'}
+              onCombo={({ event }) => {
+                event.preventDefault()
+                selectTabAndClosePopup(filteredTabs[selectedIndex])
+              }}
+            />
 
-        <KeyHandler
-          keyValue="s"
-          onKeyHandle={e => {
-            if (e.ctrlKey) {
-              e.preventDefault()
-              markedTabs.includes(filteredTabs[selectedIndex].id)
-                ? this.unmarkTab(filteredTabs[selectedIndex].id)
-                : this.markTab(filteredTabs[selectedIndex].id)
-            }
-          }}
-        />
+            <ComboKeys
+              bind={['up', 'down']}
+              onCombo={({ combo, event }) => {
+                event.preventDefault()
+                this.changeIndex(combo === 'up' ? -1 : 1, filteredTabs.length)
+              }}
+            />
 
-        <KeyHandler
-          keyValue="Enter"
-          onKeyHandle={() =>
-            selectTabAndClosePopup(filteredTabs[selectedIndex])}
-        />
+            <ComboKeys
+              bind={transformShortcut(markTabShortcut)}
+              onCombo={({ event }) => {
+                event.preventDefault()
+                markedTabs.includes(filteredTabs[selectedIndex].id)
+                  ? this.unmarkTab(filteredTabs[selectedIndex].id)
+                  : this.markTab(filteredTabs[selectedIndex].id)
+              }}
+            />
 
-        <KeyHandler
-          keyValue="d"
-          onKeyHandle={e => {
-            if (e.ctrlKey) {
-              e.preventDefault()
-              const tabIds = [
-                filteredTabs[selectedIndex].id,
-                ...markedTabs,
-              ].filter((el, i, a) => i === a.indexOf(el))
-              closeTab(...tabIds)
-            }
-          }}
-        />
+            <ComboKeys
+              bind={transformShortcut(closeTabSortcut)}
+              onCombo={({ event }) => {
+                event.preventDefault()
+                const tabIds = [
+                  filteredTabs[selectedIndex].id,
+                  ...markedTabs,
+                ].filter((el, i, a) => i === a.indexOf(el))
+                closeTab(...tabIds)
+              }}
+            />
 
-        <KeyHandler
-          keyValue="a"
-          onKeyHandle={e => {
-            if (e.ctrlKey) {
-              e.preventDefault()
-              this.markTab(...filteredTabs.map(({ id }) => id))
-            }
-          }}
-        />
+            <ComboKeys
+              bind={transformShortcut(markAllTabsShortcut)}
+              onCombo={({ event }) => {
+                event.preventDefault()
+                this.markTab(...filteredTabs.map(({ id }) => id))
+              }}
+            />
+          </Fragment>
+        )}
 
         <FancyShadow>
           <Input
             type="text"
-            autofocus
+            autoFocus
             value={filterText}
             placeholder="Search"
+            onFocus={() =>
+              this.setState({
+                focused: true,
+              })}
+            onBlur={() =>
+              this.setState({
+                focused: false,
+              })}
             innerRef={node => (this.InputNode = node)}
             onChange={({ target: { value } }) =>
               this.setState({

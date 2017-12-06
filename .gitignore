@@ -3,3 +3,4 @@ build
 secrets.*.js
 build.pem
 build.crx
+build.zip

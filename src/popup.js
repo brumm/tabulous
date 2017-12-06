@@ -12,13 +12,15 @@ import { render } from 'react-dom'
 import glamorous, { ThemeProvider } from 'glamorous'
 import delay from 'delay'
 
-import { getTabs, getCurrentTab } from 'chrome'
+import { getTabs, getCurrentTab, selectTab, closeTab } from 'chrome'
 import { AppStateProvider, AppState, Middleware } from 'store/AppState'
 import SyncWithCurrentWindowTabs from 'store/SyncWithCurrentWindowTabs'
 import SyncWithStorage from 'store/SyncWithStorage'
 import reducer, { initialState } from 'store/reducer'
 import Popup from 'components/Popup'
 import ErrorBoundary from 'components/ErrorBoundary'
+
+const selectTabAndClosePopup = tab => selectTab(tab).then(() => window.close())
 
 // the chrome extension window collapses to a tiny size
 // if we render immediately, so we'll delay by 10ms :/
@@ -34,9 +36,11 @@ delay(10)
                 <ErrorBoundary settings={settings}>
                   <ThemeProvider theme={settings}>
                     <Popup
+                      forceFocus
                       initialIndex={index}
                       tabs={tabs}
                       settings={settings}
+                      actions={{ selectTabAndClosePopup, closeTab }}
                     />
                   </ThemeProvider>
                 </ErrorBoundary>

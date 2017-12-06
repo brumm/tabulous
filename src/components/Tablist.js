@@ -29,7 +29,7 @@ const ListItem = ({
   url,
   style,
   children,
-  onSelect,
+  onSelect = () => {},
   marked,
   audible,
   index,
@@ -41,7 +41,7 @@ const ListItem = ({
         alignItems="stretch"
         padding="0px 10px"
         backgroundColor={selected && settings.highlightColor}
-        boxShadow={marked && `5px 0 0 ${settings.selectedColor} inset`}
+        boxShadow={marked && `5px 0 0 ${settings.markedColor} inset`}
         onClick={() => onSelect({ id, windowId })}
         style={style}
       >
