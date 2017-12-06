@@ -5,6 +5,7 @@ import ComboKeys from 'react-combokeys'
 
 import { transformShortcut } from 'utils'
 import { AppStateProvider, AppState, Middleware } from 'store/AppState'
+import { createTab } from 'chrome'
 
 const Container = glamorous.div({
   maxWidth: 400,
@@ -32,6 +33,23 @@ const Kbd = glamorous.kbd(({ pressed, theme }) => ({
     0 1px 1px ${pressed ? transparentize(0.7, theme.highlightColor) : '#dddddd'}
   `,
 }))
+
+const InternalLinkContainer = glamorous.span(({ theme }) => ({
+  color: theme.highlightColor,
+  cursor: 'pointer',
+  ':hover': {
+    backgroundColor: transparentize(0.9, theme.highlightColor),
+  },
+}))
+
+const InternalLink = ({ href, children }) => (
+  <InternalLinkContainer
+    onClick={() => createTab({ url: href, active: true })}
+    color=""
+  >
+    {children}
+  </InternalLinkContainer>
+)
 
 const Funkey = ({ def }) => (
   <ComboKeys
@@ -69,7 +87,7 @@ export default () => (
           Mark some other selected tab with <Funkey def={markTabShortcut} />
           <br />
           <br />
-          Now try closing the selected (and all other marked tabs) with{' '}
+          Try closing the selected (and all other marked tabs) with{' '}
           <Funkey def={closeTabSortcut} />
           <br />
           <br />
@@ -77,7 +95,14 @@ export default () => (
           <Funkey def={markAllTabsShortcut} />
           <br />
           <br />
-          If you'd like to tinker, check out the settings on the right.<br />
+          The default way of opening Tabulous is <Kbd>Ctrl + Space</Kbd>. You
+          can change this special shortcut at the bottom of the{' '}
+          <InternalLink href="chrome://extensions/">
+            extensions page
+          </InternalLink>.
+          <br />
+          <br />
+          If you like to tinker, check out the settings on the right.
         </Bla>
       </Container>
     )}

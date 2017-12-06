@@ -35,6 +35,9 @@ export default class Options extends React.Component {
     } = this.props
     const { closedTabIds } = this.state
     const listHeight = Math.ceil(listItemHeight * maxVisibleResults)
+    const filteredTabs = placeholderTabs.filter(
+      ({ id }) => !closedTabIds.includes(id)
+    )
 
     return (
       <Container>
@@ -44,10 +47,8 @@ export default class Options extends React.Component {
           </FakeToolbar>
           <FakePopupFrame>
             <Popup
-              initialIndex={0}
-              tabs={placeholderTabs.filter(
-                ({ id }) => !closedTabIds.includes(id)
-              )}
+              initialTabIndex={0}
+              tabs={filteredTabs}
               settings={this.props.settings}
               actions={{
                 selectTabAndClosePopup() {},

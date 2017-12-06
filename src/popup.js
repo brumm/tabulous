@@ -37,7 +37,7 @@ delay(10)
                   <ThemeProvider theme={settings}>
                     <Popup
                       forceFocus
-                      initialIndex={index}
+                      initialTabIndex={index}
                       tabs={tabs}
                       settings={settings}
                       actions={{ selectTabAndClosePopup, closeTab }}

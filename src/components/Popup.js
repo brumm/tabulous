@@ -17,7 +17,7 @@ export default class Popup extends React.Component {
   state = {
     focused: false,
     markedTabs: [],
-    selectedIndex: this.props.initialIndex,
+    selectedIndex: this.props.initialTabIndex,
     filterText: '',
   }
 
@@ -44,8 +44,6 @@ export default class Popup extends React.Component {
   render() {
     const {
       tabs,
-      initialIndex,
-      loading,
       actions: { selectTabAndClosePopup, closeTab },
       settings: {
         listWidth,
@@ -148,7 +146,6 @@ export default class Popup extends React.Component {
             filterText ? `No match for "${filterText}"` : "Nothin'"
           }
           items={filteredTabs}
-          loading={loading}
           selectedIndex={selectedIndex}
           markedTabs={markedTabs}
           extraData={markedTabs}

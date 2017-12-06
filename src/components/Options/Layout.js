@@ -8,9 +8,7 @@ export const Container = glamorous.div({
 })
 
 export const Left = glamorous.div({
-  flexGrow: 1,
-  flexShrink: 0,
-  flexBasis: 'auto',
+  flex: 1,
   height: '100vh',
   display: 'flex',
   flexDirection: 'column',
@@ -20,9 +18,7 @@ export const Left = glamorous.div({
 })
 
 export const Right = glamorous.div({
-  flexGrow: 1,
-  flexShrink: 0,
-  flexBasis: 'auto',
+  flex: 1,
   height: '100vh',
   display: 'flex',
   alignItems: 'center',

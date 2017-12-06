@@ -16,6 +16,7 @@ export const selectTab = ({ id, windowId }) =>
   ])
 
 export const closeTab = (...tabIds) => tabs.remove(tabIds)
+export const createTab = properties => tabs.create(properties)
 
 export const getCurrentTab = () =>
   tabs.query({ active: true }).then(([tab]) => tab)

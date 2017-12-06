@@ -95,6 +95,7 @@ const ListItem = ({
 
 export default class Tablist extends React.Component {
   static defaultProps = {
+    loading: false,
     extraData: [],
     onSelect: () => {},
   }
