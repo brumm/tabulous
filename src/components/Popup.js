@@ -61,8 +61,8 @@ export default class Popup extends React.Component {
     const filteredTabs = sortBy(
       tabs.filter(
         ({ title, url }) =>
-          title.toLowerCase().match(filterText.toLowerCase()) ||
-          url.toLowerCase().match(filterText.toLowerCase())
+          title.toLowerCase().includes(filterText.toLowerCase()) ||
+          url.toLowerCase().includes(filterText.toLowerCase())
       ),
       [({ windowId }) => (windowId !== currentWindowId ? 1 : 0), 'index']
     )
