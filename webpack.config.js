@@ -91,7 +91,7 @@ var options = {
               content_security_policy:
                 env.NODE_ENV === 'development'
                   ? "script-src 'self' 'unsafe-eval' https://cdn.ravenjs.com; object-src 'self'"
-                  : "script-src 'self' https://cdn.ravenjs.com; object-src 'self'",
+                  : "script-src 'self' https://cdn.ravenjs.com https://ssl.google-analytics.com; object-src 'self'",
             })
           )
         },
