@@ -11,15 +11,18 @@ const Container = glamorous.div({
   maxWidth: 400,
   fontFamily: 'Roboto',
 })
+
 const H1 = glamorous.h1({
   fontSize: 30,
   marginBottom: 20,
 })
-const Bla = glamorous.h1({
+
+const Paragraph = glamorous.h1({
   lineHeight: '25px',
   fontSize: 17,
   marginBottom: 25,
 })
+
 const Kbd = glamorous.kbd(({ pressed, theme }) => ({
   backgroundColor: '#fff',
   ...padding(3, 7),
@@ -67,7 +70,7 @@ export default () => (
     }) => (
       <Container>
         <H1>Hey! 🎉</H1>
-        <Bla>
+        <Paragraph>
           Thanks for giving Tabulous a whirl.
           <br />
           <br />
@@ -103,7 +106,7 @@ export default () => (
           <br />
           <br />
           If you like to tinker, check out the settings on the right.
-        </Bla>
+        </Paragraph>
       </Container>
     )}
   </AppState>
