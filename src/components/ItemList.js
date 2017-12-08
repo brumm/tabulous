@@ -2,17 +2,10 @@ import React from 'react'
 import { List } from 'react-virtualized'
 import glamorous, { Div } from 'glamorous'
 import * as glamor from 'glamor'
+import { inject, observer } from 'mobx-react'
 
-import defaultIcon from 'img/icon-48.png'
 import Pulse from 'components/Pulse'
-import { AppState } from 'store/AppState'
-
-const Ellipsis = glamorous(glamorous.Div)({
-  maxWidth: '100%',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-})
+import Ellipsis from 'components/Ellipsis'
 
 const Icon = ({ size = 24, url }) => (
   <Div width={size} height={size}>
@@ -20,22 +13,22 @@ const Icon = ({ size = 24, url }) => (
   </Div>
 )
 
-const ListItem = ({
-  id,
-  windowId,
-  selected,
-  icon,
-  title,
-  url,
-  style,
-  children,
-  onSelect = () => {},
-  marked,
-  audible,
-  index,
-}) => (
-  <AppState>
-    {({ value: { settings } }) => (
+export const ListItem = inject('settings')(
+  observer(
+    ({
+      id,
+      windowId,
+      selected,
+      icon,
+      name,
+      details,
+      style,
+      children,
+      onSelect = () => {},
+      marked,
+      audible,
+      settings,
+    }) => (
       <Div
         display="flex"
         alignItems="stretch"
@@ -67,7 +60,7 @@ const ListItem = ({
             />
           </Div>,
           <Div
-            marginLeft={10}
+            marginLeft={(name || details) && 10}
             overflow="hidden"
             key="info"
             display="flex"
@@ -76,24 +69,25 @@ const ListItem = ({
             paddingTop={Math.floor(settings.listItemHeight * 0.18)}
             paddingBottom={Math.floor(settings.listItemHeight * 0.18)}
           >
-            <Ellipsis color={selected && '#fff'}>{title}</Ellipsis>
-            {settings.listItemHeight >= 32 && (
-              <Ellipsis
-                marginTop={Math.floor(settings.listItemHeight * 0.08)}
-                fontSize="smaller"
-                color={selected ? '#fff' : '#BDBDBD'}
-              >
-                {url}
-              </Ellipsis>
-            )}
+            <Ellipsis color={selected && '#fff'}>{name}</Ellipsis>
+            {settings.listItemHeight >= 32 &&
+              details && (
+                <Ellipsis
+                  marginTop={Math.floor(settings.listItemHeight * 0.08)}
+                  fontSize="smaller"
+                  color={selected ? '#fff' : '#BDBDBD'}
+                >
+                  {details}
+                </Ellipsis>
+              )}
           </Div>,
         ]}
       </Div>
-    )}
-  </AppState>
+    )
+  )
 )
 
-export default class Tablist extends React.Component {
+export default class ItemList extends React.Component {
   static defaultProps = {
     loading: false,
     extraData: [],
@@ -125,29 +119,32 @@ export default class Tablist extends React.Component {
   )
 
   componentWillReceiveProps({ extraData }) {
-    if (this.props.extraData.length !== extraData.length) {
+    if (
+      Object.keys(extraData).some(
+        key => extraData[key] === this.props.extraData[key]
+      )
+    ) {
       this.ListComponent.forceUpdateGrid()
     }
   }
 
   rowRenderer = ({ key, index, style }) => {
-    const tab = this.props.items[index]
+    const item = this.props.items[index]
     const isSelected = index === this.props.selectedIndex
-    const isMarked = this.props.markedTabs.includes(tab.id)
+    const isMarked = this.props.markedTabIds.includes(item.id)
 
     return (
       <ListItem
         key={key}
-        id={tab.id}
-        windowId={tab.windowId}
-        index={tab.index}
+        id={item.id}
+        windowId={item.windowId}
         onSelect={this.props.onSelect}
         selected={isSelected}
         marked={isMarked}
-        audible={tab.audible && !tab.mutedInfo.muted}
-        icon={tab.favIconUrl || defaultIcon}
-        title={tab.title}
-        url={tab.url}
+        audible={item.audible && !item.mutedInfo.muted}
+        icon={item.icon}
+        name={item.name}
+        details={item.details}
         style={style}
       />
     )
@@ -161,6 +158,7 @@ export default class Tablist extends React.Component {
       height,
       itemHeight,
       loading,
+      style,
     } = this.props
 
     return (
@@ -175,9 +173,7 @@ export default class Tablist extends React.Component {
         scrollToIndex={selectedIndex}
         overscanRowCount={0}
         tabIndex={0}
-        containerStyle={{
-          backgroundColor: '#fbfbfb',
-        }}
+        containerStyle={style}
       />
     )
   }

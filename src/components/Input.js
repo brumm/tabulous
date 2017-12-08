@@ -1,6 +1,6 @@
 import glamorous from 'glamorous'
 
-export const Input = glamorous.input(({ theme }) => ({
+const Input = glamorous.input(({ theme }) => ({
   width: theme.listWidth,
   height: theme.listItemHeight,
   padding: 10,
@@ -35,3 +35,5 @@ export const FancyShadow = glamorous.div({
     backgroundSize: '150% 8px, 100% 1px',
   },
 })
+
+export default Input

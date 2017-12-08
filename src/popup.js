@@ -12,45 +12,28 @@ import React from 'react'
 import { render } from 'react-dom'
 import glamorous, { ThemeProvider } from 'glamorous'
 import delay from 'delay'
+import { Provider } from 'mobx-react'
 
-import { getTabs, getCurrentTab, selectTab, closeTab } from 'chrome'
-import { AppStateProvider, AppState, Middleware } from 'store/AppState'
-import SyncWithCurrentWindowTabs from 'store/SyncWithCurrentWindowTabs'
-import SyncWithStorage from 'store/SyncWithStorage'
-import reducer, { initialState } from 'store/reducer'
-import Popup from 'components/Popup'
+import { getTabs, getCurrentTab, selectTab, closeTab } from 'browser-api'
 import ErrorBoundary from 'components/ErrorBoundary'
-
-const selectTabAndClosePopup = tab => selectTab(tab).then(() => window.close())
+import Tabulous from 'components/Tabulous'
+import settings from 'store/Settings'
+import sources from 'store/Sources'
 
 // the chrome extension window collapses to a tiny size
 // if we render immediately, so we'll delay by 10ms :/
 delay(10)
   .then(getCurrentTab)
-  .then(({ index, windowId }) =>
+  .then(({ index }) => {
+    sources.directObjects.setIndex(index)
     render(
-      <AppStateProvider defaultValue={initialState} reducer={reducer}>
-        <Middleware component={SyncWithStorage}>
-          <Middleware component={SyncWithCurrentWindowTabs}>
-            <AppState>
-              {({ value: { tabs, settings } }) => (
-                <ErrorBoundary settings={settings}>
-                  <ThemeProvider theme={settings}>
-                    <Popup
-                      forceFocus
-                      initialTabIndex={index}
-                      currentWindowId={windowId}
-                      tabs={tabs}
-                      settings={settings}
-                      actions={{ selectTabAndClosePopup, closeTab }}
-                    />
-                  </ThemeProvider>
-                </ErrorBoundary>
-              )}
-            </AppState>
-          </Middleware>
-        </Middleware>
-      </AppStateProvider>,
+      <Provider settings={settings}>
+        <ErrorBoundary settings={settings}>
+          <ThemeProvider theme={settings}>
+            <Tabulous settings={settings} sources={sources} />
+          </ThemeProvider>
+        </ErrorBoundary>
+      </Provider>,
       window.document.getElementById('app-container')
     )
-  )
+  })

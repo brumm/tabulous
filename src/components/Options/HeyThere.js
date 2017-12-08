@@ -4,8 +4,7 @@ import { padding, margin, transparentize } from 'polished'
 import ComboKeys from 'react-combokeys'
 
 import { transformShortcut } from 'utils'
-import { AppStateProvider, AppState, Middleware } from 'store/AppState'
-import { createTab } from 'chrome'
+import { createTab } from 'browser-api'
 
 const Container = glamorous.div({
   padding: 20,
@@ -62,53 +61,45 @@ const Funkey = ({ def }) => (
   />
 )
 
-export default () => (
-  <AppState>
-    {({
-      value: {
-        settings: { markAllTabsShortcut, markTabShortcut, closeTabSortcut },
-      },
-    }) => (
-      <Container>
-        <H1>Hey! 🎉</H1>
-        <Paragraph>
-          Thanks for giving Tabulous a whirl.
-          <br />
-          <br />
-          Start out by searching for 'music' in the Tabulous popup on the left.
-          Don't worry, it's displaying some made-up stuff and won't mess with
-          your existing tabs.
-          <br />
-          <br />
-          Then move the selection up and down with your
-          <Funkey def="Up" /> or <Funkey def="Down" />
-          keys.
-          <br />
-          <br />
-          Now activate a tab with <Funkey def="Enter" />
-          <br />
-          <br />
-          Mark some other selected tab with <Funkey def={markTabShortcut} />
-          <br />
-          <br />
-          Try closing the selected (and all other marked tabs) with{' '}
-          <Funkey def={closeTabSortcut} />
-          <br />
-          <br />
-          You can also mark all filtered tabs with{' '}
-          <Funkey def={markAllTabsShortcut} />
-          <br />
-          <br />
-          The default way of opening Tabulous is <Kbd>Ctrl + Space</Kbd>. You
-          can change this special shortcut at the bottom of the{' '}
-          <InternalLink href="chrome://extensions/">
-            extensions page
-          </InternalLink>.
-          <br />
-          <br />
-          If you like to tinker, check out the settings on the right.
-        </Paragraph>
-      </Container>
-    )}
-  </AppState>
+export default ({
+  settings: { markAllTabsShortcut, markTabShortcut, closeTabShortcut },
+}) => (
+  <Container>
+    <H1>Hey! 🎉</H1>
+    <Paragraph>
+      Thanks for giving Tabulous a whirl.
+      <br />
+      <br />
+      Start out by searching for 'music' in the Tabulous popup on the left.
+      Don't worry, it's displaying some made-up stuff and won't mess with your
+      existing tabs.
+      <br />
+      <br />
+      Then move the selection up and down with your
+      <Funkey def="Up" /> or <Funkey def="Down" />
+      keys.
+      <br />
+      <br />
+      Now activate a tab with <Funkey def="Enter" />
+      <br />
+      <br />
+      Mark some other selected tab with <Funkey def={markTabShortcut} />
+      <br />
+      <br />
+      Try closing the selected (and all other marked tabs) with{' '}
+      <Funkey def={closeTabShortcut} />
+      <br />
+      <br />
+      You can also mark all filtered tabs with{' '}
+      <Funkey def={markAllTabsShortcut} />
+      <br />
+      <br />
+      The default way of opening Tabulous is <Kbd>Ctrl + Space</Kbd>. You can
+      change this special shortcut at the bottom of the{' '}
+      <InternalLink href="chrome://extensions/">extensions page</InternalLink>.
+      <br />
+      <br />
+      If you like to tinker, check out the settings on the right.
+    </Paragraph>
+  </Container>
 )

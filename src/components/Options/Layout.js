@@ -46,7 +46,9 @@ export const FakePopupFrame = glamorous.div({
   top: -4,
   borderRadius: 3,
   border: '1px solid #fff',
+  minHeight: 20,
   backgroundColor: '#fff',
+  minWidth: 100,
   filter: `
     drop-shadow(0 0px 5px rgba(0, 0, 0, 0.1))
     drop-shadow(0 10px 10px rgba(0, 0, 0, 0.1))

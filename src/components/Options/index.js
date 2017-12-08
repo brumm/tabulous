@@ -1,10 +1,10 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { position } from 'polished'
+import { observer } from 'mobx-react'
 
-import Popup from 'components/Popup'
 import { Input, FancyShadow } from 'components/Input'
-import Tablist from 'components/Tablist'
+import Tabulous from 'components/Tabulous'
 import Settings from './Settings'
 import HeyThere from './HeyThere'
 import placeholderTabs from './placeholderTabs'
@@ -16,6 +16,7 @@ import {
   FakePopupFrame,
 } from './Layout'
 
+@observer
 export default class Options extends React.Component {
   state = {
     closedTabIds: [],
@@ -30,6 +31,7 @@ export default class Options extends React.Component {
         maxVisibleResults,
         highlightColor,
         markedColor,
+        advancedMode,
       },
     } = this.props
     const { closedTabIds } = this.state
@@ -44,7 +46,7 @@ export default class Options extends React.Component {
           path="/first-run"
           render={() => (
             <Panel style={{ backgroundColor: '#fafafa' }}>
-              <HeyThere />
+              <HeyThere settings={this.props.settings} />
             </Panel>
           )}
         />
@@ -53,27 +55,17 @@ export default class Options extends React.Component {
           <FakeToolbar>
             <FakeToolbarIcon />
           </FakeToolbar>
+
           <FakePopupFrame>
-            <Popup
-              initialTabIndex={0}
-              currentWindowId={0}
-              tabs={filteredTabs}
+            <Tabulous
               settings={this.props.settings}
-              actions={{
-                selectTabAndClosePopup() {},
-                closeTab: (...tabIds) =>
-                  Promise.resolve(
-                    this.setState({
-                      closedTabIds: [...closedTabIds, ...tabIds],
-                    })
-                  ),
-              }}
+              sources={this.props.sources}
             />
           </FakePopupFrame>
         </Panel>
 
         <Panel style={{ flex: 'unset' }}>
-          <Settings dispatch={dispatch} settings={this.props.settings} />
+          <Settings settings={this.props.settings} />
         </Panel>
       </Container>
     )
