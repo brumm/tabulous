@@ -31,6 +31,7 @@ const ShortcutInput = glamorous.input(({ theme }) => ({
   background: '#fff',
   border: '1px solid #dddddd',
   '&:focus': {
+    color: theme.highlightColor,
     border: `1px solid ${theme.highlightColor}`,
     boxShadow: `0 0 0 4px ${transparentize(0.7, theme.highlightColor)}`,
   },
