@@ -11,7 +11,6 @@ const MAX_POPUP_WIDTH = 800
 const MAX_POPUP_HEIGHT = 600
 
 const SettingsFrame = glamorous.div({
-  width: '35vw',
   backgroundColor: '#fafafa',
   fontFamily: 'Roboto',
   fontSize: 14,

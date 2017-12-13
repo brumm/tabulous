@@ -10,8 +10,7 @@ import HeyThere from './HeyThere'
 import placeholderTabs from './placeholderTabs'
 import {
   Container,
-  Left,
-  Right,
+  Panel,
   FakeToolbar,
   FakeToolbarIcon,
   FakePopupFrame,
@@ -41,7 +40,16 @@ export default class Options extends React.Component {
 
     return (
       <Container>
-        <Left>
+        <Route
+          path="/first-run"
+          render={() => (
+            <Panel style={{ backgroundColor: '#fafafa' }}>
+              <HeyThere />
+            </Panel>
+          )}
+        />
+
+        <Panel>
           <FakeToolbar>
             <FakeToolbarIcon />
           </FakeToolbar>
@@ -62,20 +70,11 @@ export default class Options extends React.Component {
               }}
             />
           </FakePopupFrame>
-        </Left>
+        </Panel>
 
-        <Route
-          path="/first-run"
-          render={() => (
-            <Right>
-              <HeyThere />
-            </Right>
-          )}
-        />
-
-        <Right>
+        <Panel style={{ flex: 'unset' }}>
           <Settings dispatch={dispatch} settings={this.props.settings} />
-        </Right>
+        </Panel>
       </Container>
     )
   }

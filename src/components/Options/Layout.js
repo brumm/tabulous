@@ -5,24 +5,20 @@ import smallIcon from 'img/icon-24.png'
 
 export const Container = glamorous.div({
   display: 'flex',
+  height: '100vh',
 })
 
-export const Left = glamorous.div({
+export const Panel = glamorous.div({
   flex: 1,
-  height: '100vh',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '#fafafa',
-})
-
-export const Right = glamorous.div({
-  flex: 1,
-  height: '100vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  '& > *': {
+    maxHeight: '100vh',
+    overflowY: 'auto',
+    flexShrink: 0,
+  },
 })
 
 export const FakeToolbar = glamorous.div({

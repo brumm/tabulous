@@ -8,7 +8,8 @@ import { AppStateProvider, AppState, Middleware } from 'store/AppState'
 import { createTab } from 'chrome'
 
 const Container = glamorous.div({
-  maxWidth: 400,
+  padding: 20,
+  maxWidth: 500,
   fontFamily: 'Roboto',
 })
 
