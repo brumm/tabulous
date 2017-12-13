@@ -1,7 +1,7 @@
 {
   "name": "tabulous",
   "version": "0.0.9",
-  "description": "a chrome extension thingie to wrangle your tabs",
+  "description": "Filter, activate, select or close one or multiple tabs across windows --- all with your keyboard.",
   "scripts": {
     "release": "npm run bump && npm run build && npm run zip",
     "build": "NODE_ENV='production' node utils/build.js",
