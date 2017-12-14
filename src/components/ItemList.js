@@ -72,6 +72,7 @@ export const ListItem = inject('settings')(
                   marginTop={Math.floor(settings.listItemHeight * 0.08)}
                   fontSize="smaller"
                   color={selected ? '#fff' : '#BDBDBD'}
+                  letterSpacing={0.3}
                 >
                   {details}
                 </Ellipsis>
