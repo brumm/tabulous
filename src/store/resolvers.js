@@ -9,7 +9,7 @@ import {
   updateTab,
 } from 'browser-api'
 
-const defaultActionIcon = ''
+import defaultActionIcon from 'img/icon-action'
 
 export const directObjectResolver = () =>
   getTabs().then(tabs =>
