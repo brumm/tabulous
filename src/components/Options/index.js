@@ -52,16 +52,18 @@ export default class Options extends React.Component {
         />
 
         <Panel>
-          <FakeToolbar>
-            <FakeToolbarIcon />
-          </FakeToolbar>
+          <div style={{ height: '55vh', overflow: 'visible' }}>
+            <FakeToolbar>
+              <FakeToolbarIcon />
+            </FakeToolbar>
 
-          <FakePopupFrame>
-            <Tabulous
-              settings={this.props.settings}
-              sources={this.props.sources}
-            />
-          </FakePopupFrame>
+            <FakePopupFrame>
+              <Tabulous
+                settings={this.props.settings}
+                sources={this.props.sources}
+              />
+            </FakePopupFrame>
+          </div>
         </Panel>
 
         <Panel style={{ flex: 'unset' }}>
