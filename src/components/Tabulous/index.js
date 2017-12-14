@@ -4,6 +4,7 @@ import { observer } from 'mobx-react'
 import ComboKeys from 'react-combokeys'
 import { transparentize } from 'polished'
 
+import { closeTab } from 'browser-api'
 import { wrapAround, transformShortcut } from 'utils'
 import Input, { FancyShadow } from 'components/Input'
 import Ellipsis from 'components/Ellipsis'
@@ -135,6 +136,17 @@ export default class Tabulous extends React.Component {
         />
         {activePaneIndex === 0 && (
           <Fragment>
+            <ComboKeys
+              bind={transformShortcut(closeTabShortcut)}
+              onCombo={({ event }) => {
+                event.preventDefault()
+                const tabIds = [
+                  activeSource.selected.id,
+                  ...markedTabIds,
+                ].filter((el, i, a) => i === a.indexOf(el))
+                closeTab(...tabIds)
+              }}
+            />
             <ComboKeys
               bind={transformShortcut(markTabShortcut)}
               onCombo={({ event }) => {
