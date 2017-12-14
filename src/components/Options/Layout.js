@@ -44,7 +44,7 @@ export const FakePopupFrame = glamorous.div({
   position: 'relative',
   overflow: 'visible',
   top: -4,
-  borderRadius: 3,
+  borderRadius: 2,
   border: '1px solid #fff',
   minHeight: 20,
   backgroundColor: '#fff',
