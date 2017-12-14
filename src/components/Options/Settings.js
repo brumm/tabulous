@@ -59,18 +59,18 @@ const Setting = ({ noBorder, label, children, style }) => (
     borderBottom={noBorder || '1px solid #dddddd'}
     {...style}
   >
-    <Label display="block" textTransform="capitalize">
+    <Label display="block" textTransform="capitalize" overflow="visible">
       {label}
+      <Div
+        marginTop={10}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        overflow="visible"
+      >
+        {children}
+      </Div>
     </Label>
-    <Div
-      marginTop={10}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      overflow="visible"
-    >
-      {children}
-    </Div>
   </Div>
 )
 
