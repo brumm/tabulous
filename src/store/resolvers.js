@@ -13,13 +13,17 @@ const defaultActionIcon = ''
 
 export const directObjectResolver = () =>
   getTabs().then(tabs =>
-    tabs.map(({ id, windowId, title, url, favIconUrl }) => ({
-      id,
-      windowId,
-      name: title,
-      details: url,
-      icon: favIconUrl,
+    tabs.map(tab => ({
+      id: tab.id,
+      name: tab.title,
+      details: tab.url,
+      icon: tab.favIconUrl,
       type: ['browser.tab', 'public.url'],
+      meta: {
+        pinned: tab.pinned,
+        audible: tab.audible && !tab.mutedInfo.muted,
+        windowId: tab.windowId,
+      },
     }))
   )
 
@@ -31,15 +35,15 @@ export const actionObjectResolver = (directObject = {}) =>
         details: 'Activate tab and its window',
         icon: defaultActionIcon,
         directTypes: ['browser.tab'],
-        type: ['com.tabulous.action-object'],
-        execute: ([{ id, windowId }]) => selectTab({ id, windowId }),
+        type: ['tabulous.action'],
+        execute: ([{ id, meta: { windowId } }]) => selectTab({ id, windowId }),
       },
       {
         name: 'Close',
         details: 'Close one or more tabs',
         icon: defaultActionIcon,
         directTypes: ['browser.tab'],
-        type: ['com.tabulous.action-object'],
+        type: ['tabulous.action'],
         execute: tabs =>
           closeTab(
             ...tabs
@@ -52,7 +56,7 @@ export const actionObjectResolver = (directObject = {}) =>
         details: 'Pin one or more tabs',
         icon: defaultActionIcon,
         directTypes: ['browser.tab'],
-        type: ['com.tabulous.action-object'],
+        type: ['tabulous.action'],
         execute: tabs =>
           tabs.forEach(({ id }) => updateTab(id, { pinned: true })),
       },
@@ -60,16 +64,17 @@ export const actionObjectResolver = (directObject = {}) =>
         name: 'Move To...',
         details: 'Move to another window',
         icon: defaultActionIcon,
-        type: ['com.tabulous.action-object'],
+        type: ['tabulous.action'],
         directTypes: ['browser.tab'],
         indirectTypes: ['browser.window'],
         suggestedObjects: () =>
           getWindows().then(windows => [
-            ...windows.map((_window, index) => ({
+            ...windows.map(({ id, ..._window }, index) => ({
+              id,
               name: `Window ${index + 1}`,
-              ..._window,
-              windowType: window.type,
+              details: `${_window.tabs.length} tabs`,
               type: ['browser.window'],
+              meta: _window,
             })),
             {
               name: `New Window`,

@@ -25,10 +25,11 @@ export const getTabs = (options = {}) => tabs.query(options)
 export const moveTabs = (...args) => tabs.move(...args)
 export const updateTab = (...args) => tabs.update(...args)
 
+const windowFilter = { populate: true, windowTypes: ['normal'] }
 export const getWindows = () =>
   Promise.all([
-    windows.getLastFocused(),
-    windows.getAll(),
+    windows.getLastFocused(windowFilter),
+    windows.getAll(windowFilter),
   ]).then(([currentWindow, windows]) => [
     ...windows.filter(({ id }) => id !== currentWindow.id),
     { ...currentWindow, name: 'This Window' },

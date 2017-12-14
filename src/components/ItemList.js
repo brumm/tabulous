@@ -16,15 +16,12 @@ const Icon = ({ size = 24, url }) => (
 export const ListItem = inject('settings')(
   observer(
     ({
-      id,
-      windowId,
       selected,
       icon,
       name,
       details,
       style,
       children,
-      onSelect = () => {},
       marked,
       audible,
       settings,
@@ -35,7 +32,6 @@ export const ListItem = inject('settings')(
         padding="0px 10px"
         backgroundColor={selected && settings.highlightColor}
         boxShadow={marked && `5px 0 0 ${settings.markedColor} inset`}
-        onClick={() => onSelect({ id, windowId })}
         style={style}
       >
         {children || [
@@ -91,7 +87,6 @@ export default class ItemList extends React.Component {
   static defaultProps = {
     loading: false,
     extraData: [],
-    onSelect: () => {},
   }
 
   loadingRenderer = () => (
@@ -136,12 +131,9 @@ export default class ItemList extends React.Component {
     return (
       <ListItem
         key={key}
-        id={item.id}
-        windowId={item.windowId}
-        onSelect={this.props.onSelect}
         selected={isSelected}
         marked={isMarked}
-        audible={item.audible && !item.mutedInfo.muted}
+        audible={item.meta.audible}
         icon={item.icon}
         name={item.name}
         details={item.details}

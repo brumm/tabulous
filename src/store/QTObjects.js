@@ -108,6 +108,9 @@ export class QTObject {
   constructor(object = {}) {
     this.object = object
   }
+  get id() {
+    return this.object.id
+  }
   get name() {
     return this.object.name
   }
@@ -120,11 +123,8 @@ export class QTObject {
   get icon() {
     return this.object.icon || this.object.path || emptyIcon
   }
-  get id() {
-    return this.object.id
-  }
-  get windowId() {
-    return this.object.windowId
+  get meta() {
+    return this.object.meta || {}
   }
 
   // get hasChildren() {
