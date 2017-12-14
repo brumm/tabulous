@@ -1,4 +1,5 @@
 import matchSorter from 'match-sorter'
+import sortBy from 'lodash.sortby'
 import { observable, computed, action } from 'mobx'
 import emptyIcon from 'img/icon-48.png'
 
@@ -22,7 +23,7 @@ export class QTObjectSource {
       ? matchSorter(this._items, this.searchTerm.join(''), {
           keys: ['name', 'details'],
         })
-      : this._items
+      : sortBy(this._items, ['meta.index', 'meta.windowId'])
   }
 
   @computed
