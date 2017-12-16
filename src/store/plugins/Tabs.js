@@ -24,7 +24,7 @@ const tabResolver = directObject =>
           name: tab.title,
           details: tab.url,
           icon: tab.favIconUrl,
-          type: TYPES.TAB,
+          type: [TYPES.TAB],
           meta: {
             pinned: tab.pinned,
             audible: tab.audible && !tab.mutedInfo.muted,

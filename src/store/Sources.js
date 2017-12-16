@@ -2,26 +2,29 @@ import { observe, observable, useStrict } from 'mobx'
 
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import TBObject from './TBObject'
-import TBObjectSource from './TBObjectSource'
+import TBCatalog from './TBCatalog'
 import TabSource, { actions } from './plugins/Tabs'
 
 import {
-  directObjectResolver,
-  actionObjectResolver,
-  indirectObjectResolver,
-} from './resolvers'
+  filterActionObjectsForDirectObject,
+  suggestedIndirectObjectsForActionObject,
+} from './plumbing'
 
 useStrict(true)
 
 class Sources {
-  @observable directObjects = new TBObjectSource(TabSource)
+  @observable directObjects = new TBCatalog(TabSource)
+
   @observable
-  actionObjects = new TBObjectSource({
-    childResolver: () => Promise.resolve(actions),
+  actionObjects = new TBCatalog({
+    childResolver: directObject =>
+      filterActionObjectsForDirectObject({ actions, directObject }),
   })
+
   @observable
-  indirectObjects = new TBObjectSource({
-    childResolver: indirectObjectResolver,
+  indirectObjects = new TBCatalog({
+    childResolver: actionObject =>
+      suggestedIndirectObjectsForActionObject(actionObject),
   })
 
   constructor() {
@@ -37,6 +40,8 @@ class Sources {
       })
     )
 
+    // TODO sources should be able to refresh all sources
+    // or even only themselves
     onRemoved(() => this.directObjects.refreshSources())
     onCreated(() => this.directObjects.refreshSources())
     // onUpdated(() => this.directObjects.refreshSources())

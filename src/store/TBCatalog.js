@@ -5,7 +5,7 @@ import { observable, computed, action } from 'mobx'
 import TBObject from './TBObject'
 import { wrapAround } from 'utils'
 
-export default class TBObjectSource {
+export default class TBCatalog {
   @observable index = 0
   @observable loading = true
   @observable _items = []
