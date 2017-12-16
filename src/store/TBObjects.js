@@ -5,7 +5,7 @@ import emptyIcon from 'img/icon-48.png'
 
 import { wrapAround } from 'utils'
 
-export class QTObjectSource {
+export class TBObjectSource {
   @observable index = 0
   @observable loading = true
   @observable _items = []
@@ -29,9 +29,9 @@ export class QTObjectSource {
   @computed
   get selected() {
     if (this.items.length === 0) {
-      return new QTObject()
+      return new TBObject()
     }
-    return this.items[this.index] || new QTObject()
+    return this.items[this.index] || new TBObject()
   }
 
   @action
@@ -47,25 +47,6 @@ export class QTObjectSource {
   setIndex(index) {
     this.index = index
   }
-
-  // @action
-  // browseToParent() {
-  //   this.setInput(
-  //     this.selected.path
-  //       ? `/${this.selected.getParent()}`
-  //       : this.input
-  //           .split('/')
-  //           .slice(0, -1)
-  //           .join('/')
-  //   )
-  // }
-
-  // @action
-  // browseToChild(direction) {
-  //   if (this.selected.hasChildren) {
-  //     this.setInput(this.selected.path)
-  //   }
-  // }
 
   @action
   pushSearchCharacter(character) {
@@ -94,18 +75,31 @@ export class QTObjectSource {
   }
 
   @action
+  browseToChildren() {
+    this.setResolver(this.selected.childResolver)
+    this.index = 0
+    this.searchTerm = []
+  }
+
+  @action
+  setResolver(resolver) {
+    this.resolver = resolver
+    this.runResolver()
+  }
+
+  @action
   runResolver(input = this.input, selectedObjects = {}) {
     this.loading = true
     this.resolver(input, ...selectedObjects).then(
       action(items => {
-        this._items = items.map(item => new QTObject(item))
+        this._items = items.map(item => new TBObject(item))
         this.loading = false
       })
     )
   }
 }
 
-export class QTObject {
+export class TBObject {
   constructor(object = {}) {
     this.object = object
   }
@@ -128,22 +122,18 @@ export class QTObject {
     return this.object.meta || {}
   }
 
-  // get hasChildren() {
-  //   return this.object.type.includes('public.folder')
-  // }
+  // direct and indirect concerns
+  get providesChildren() {
+    return this.object.providesChildren
+  }
+  get childResolver() {
+    return this.object.childResolver
+  }
 
+  // action concerns
   execute(direct, indirect) {
     this.object.execute && this.object.execute(direct, indirect)
   }
-
-  // getParent() {
-  //   return this.object.components.slice(1, -2).join('/')
-  // }
-  // get children() {
-  //   return this.object.children
-  // }
-
-  // ugh
   get suggestedObjects() {
     return this.object.suggestedObjects
   }
@@ -153,7 +143,4 @@ export class QTObject {
   get directTypes() {
     return this.object.directTypes
   }
-  // get components() {
-  //   return this.object.components
-  // }
 }

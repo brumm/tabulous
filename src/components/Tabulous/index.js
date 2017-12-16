@@ -2,31 +2,12 @@ import React, { Fragment } from 'react'
 import glamorous from 'glamorous'
 import { observer } from 'mobx-react'
 import ComboKeys from 'react-combokeys'
-import { transparentize } from 'polished'
 
 import { closeTab } from 'browser-api'
 import { wrapAround, transformShortcut } from 'utils'
 import Input, { FancyShadow } from 'components/Input'
-import Ellipsis from 'components/Ellipsis'
-import ItemList, { ListItem } from 'components/ItemList'
-
-const PaneContainer = glamorous.div({
-  display: 'flex',
-})
-
-const Pane = glamorous.div(({ active, theme }) => ({
-  display: 'flex',
-  flexGrow: active ? 1 : 0,
-  flexShrink: active ? null : 0,
-  position: 'relative',
-  zIndex: active ? 2 : 1,
-  height: theme.listItemHeight,
-  alignItems: 'center',
-  boxShadow: `
-    0 0 10px rgba(0, 0, 0, 0.2)
-  `,
-  backgroundColor: active ? '#fff' : '#fafafa',
-}))
+import { Pane, PaneContainer } from 'components/Pane'
+import ItemList from 'components/ItemList'
 
 const Container = glamorous.div(({ theme }) => ({
   width: theme.listWidth,
@@ -134,6 +115,15 @@ export default class Tabulous extends React.Component {
             activeSource.changeIndex(combo === 'up' ? -1 : 1)
           }}
         />
+        {activeSource.selected.providesChildren && (
+          <ComboKeys
+            bind={'right'}
+            onCombo={({ event }) => {
+              event.preventDefault()
+              activeSource.browseToChildren()
+            }}
+          />
+        )}
         {activePaneIndex === 0 && (
           <Fragment>
             <ComboKeys
@@ -174,50 +164,23 @@ export default class Tabulous extends React.Component {
             />
           </Fragment>
         )}
+
         <FancyShadow>
           {advancedMode ? (
             <PaneContainer>
-              <Pane active={activePaneIndex === 0}>
-                <ListItem
-                  icon={sources.directObjects.selected.icon}
-                  name={
-                    activePaneIndex === 0 && sources.directObjects.selected.name
-                  }
-                  settings={{
-                    highlightColor,
-                    markedColor,
-                    listItemHeight,
-                  }}
-                />
-              </Pane>
-              <Pane active={activePaneIndex === 1}>
-                <ListItem
-                  icon={sources.actionObjects.selected.icon}
-                  name={
-                    activePaneIndex === 1 && sources.actionObjects.selected.name
-                  }
-                  settings={{
-                    highlightColor,
-                    markedColor,
-                    listItemHeight,
-                  }}
-                />
-              </Pane>
+              <Pane
+                active={activePaneIndex === 0}
+                item={sources.directObjects.selected}
+              />
+              <Pane
+                active={activePaneIndex === 1}
+                item={sources.actionObjects.selected}
+              />
               {this.showThirdPane && (
-                <Pane active={activePaneIndex === 2}>
-                  <ListItem
-                    icon={sources.indirectObjects.selected.icon}
-                    name={
-                      activePaneIndex === 2 &&
-                      sources.indirectObjects.selected.name
-                    }
-                    settings={{
-                      highlightColor,
-                      markedColor,
-                      listItemHeight,
-                    }}
-                  />
-                </Pane>
+                <Pane
+                  active={activePaneIndex === 2}
+                  item={sources.indirectObjects.selected}
+                />
               )}
             </PaneContainer>
           ) : (
@@ -248,7 +211,7 @@ export default class Tabulous extends React.Component {
           itemHeight={listItemHeight}
           items={activeSource.items}
           selectedIndex={activeSource.index}
-          style={{ backgroundColor: '#fafafa' }}
+          style={{ backgroundColor: '#fafafa', borderRadius: '0 0 2px 2px' }}
         />
       </Container>
     )

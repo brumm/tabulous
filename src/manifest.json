@@ -1,7 +1,7 @@
 {
   "name": "Tabulous",
   "options_page": "options.html",
-  "permissions": ["tabs", "activeTab", "storage"],
+  "permissions": ["tabs", "activeTab", "storage", "bookmarks"],
   "browser_action": {
     "default_title": "Tabulous",
     "default_popup": "popup.html",

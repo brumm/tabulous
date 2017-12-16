@@ -1,7 +1,7 @@
 import { observe, observable, useStrict } from 'mobx'
 
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
-import { QTObject, QTObjectSource } from './QTObjects'
+import { TBObject, TBObjectSource } from './TBObjects'
 import {
   directObjectResolver,
   actionObjectResolver,
@@ -11,9 +11,9 @@ import {
 useStrict(true)
 
 class Sources {
-  @observable directObjects = new QTObjectSource(directObjectResolver)
-  @observable actionObjects = new QTObjectSource(actionObjectResolver)
-  @observable indirectObjects = new QTObjectSource(indirectObjectResolver)
+  @observable directObjects = new TBObjectSource(directObjectResolver)
+  @observable actionObjects = new TBObjectSource(actionObjectResolver)
+  @observable indirectObjects = new TBObjectSource(indirectObjectResolver)
 
   constructor() {
     observe(this.directObjects, 'selected', ({ newValue }) =>
@@ -30,7 +30,7 @@ class Sources {
 
     onRemoved(() => this.directObjects.runResolver())
     onCreated(() => this.directObjects.runResolver())
-    onUpdated(() => this.directObjects.runResolver())
+    // onUpdated(() => this.directObjects.runResolver())
     onMoved(() => this.directObjects.runResolver())
   }
 
@@ -49,4 +49,5 @@ class Sources {
   }
 }
 
-export default new Sources()
+const sources = (window.sources = new Sources())
+export default sources
