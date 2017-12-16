@@ -47,7 +47,7 @@ class Tab extends TBObject {
   }
 }
 
-export const actions = [
+export const tabActions = [
   {
     name: 'Activate',
     details: 'Activate tab and its window',

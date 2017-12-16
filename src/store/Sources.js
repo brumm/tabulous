@@ -3,7 +3,7 @@ import { observe, observable, useStrict } from 'mobx'
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import TBObject from './TBObject'
 import TBCatalog from './TBCatalog'
-import TabSource, { actions } from './plugins/Tabs'
+import TabSource, { tabActions } from './plugins/Tabs'
 
 import {
   filterActionObjectsForDirectObject,
@@ -18,7 +18,10 @@ class Sources {
   @observable
   actionObjects = new TBCatalog({
     childResolver: directObject =>
-      filterActionObjectsForDirectObject({ actions, directObject }),
+      filterActionObjectsForDirectObject({
+        actions: [...tabActions],
+        directObject,
+      }),
   })
 
   @observable
