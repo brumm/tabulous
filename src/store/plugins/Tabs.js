@@ -1,4 +1,4 @@
-import { TBObject } from 'store/TBObjects'
+import TBObject from 'store/TBObject'
 import {
   getTabs,
   selectTab,

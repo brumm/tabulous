@@ -1,7 +1,8 @@
 import { observe, observable, useStrict } from 'mobx'
 
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
-import { TBObject, TBObjectSource } from './TBObjects'
+import TBObject from './TBObject'
+import TBObjectSource from './TBObjectSource'
 import TabSource, { actions } from './plugins/Tabs'
 
 import {
