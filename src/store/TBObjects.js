@@ -12,7 +12,7 @@ export class TBObjectSource {
   @observable input = undefined
   @observable searchTerm = []
 
-  constructor(resolver) {
+  constructor(...resolver) {
     this.resolver = resolver
     this.setInput()
   }
@@ -67,11 +67,11 @@ export class TBObjectSource {
   }
 
   @action
-  setInput(input, ...selectedObjects) {
+  setInput(input) {
     this.index = 0
     this.searchTerm = []
     this.input = input
-    this.runResolver(input, selectedObjects)
+    this.runResolver(input)
   }
 
   @action
@@ -88,11 +88,18 @@ export class TBObjectSource {
   }
 
   @action
-  runResolver(input = this.input, selectedObjects = {}) {
+  runResolver(input = this.input) {
     this.loading = true
-    this.resolver(input, ...selectedObjects).then(
+    Promise.all(
+      this.resolver.map(({ resolve, Objekt }) =>
+        resolve(input).then(items => items.map(item => new Objekt(item)))
+      )
+    ).then(
       action(items => {
-        this._items = items.map(item => new TBObject(item))
+        this._items = items.reduce(
+          (collection, item) => collection.concat(item),
+          []
+        )
         this.loading = false
       })
     )

@@ -1,0 +1,9 @@
+
+split up actions into individual sets ('plugins'?)
+split up resolvers into individual files
+allow multiple resolvers for directObject
+
+
+
+change/filter actions based on directObject
+pin/unpin

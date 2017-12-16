@@ -2,6 +2,8 @@ import { observe, observable, useStrict } from 'mobx'
 
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import { TBObject, TBObjectSource } from './TBObjects'
+import * as Tab from './plugins/Tabs'
+
 import {
   directObjectResolver,
   actionObjectResolver,
@@ -11,9 +13,17 @@ import {
 useStrict(true)
 
 class Sources {
-  @observable directObjects = new TBObjectSource(directObjectResolver)
-  @observable actionObjects = new TBObjectSource(actionObjectResolver)
-  @observable indirectObjects = new TBObjectSource(indirectObjectResolver)
+  @observable directObjects = new TBObjectSource(Tab)
+  @observable
+  actionObjects = new TBObjectSource({
+    resolve: () => Promise.resolve(Tab.actions),
+    Objekt: TBObject,
+  })
+  @observable
+  indirectObjects = new TBObjectSource({
+    resolve: indirectObjectResolver,
+    Objekt: TBObject,
+  })
 
   constructor() {
     observe(this.directObjects, 'selected', ({ newValue }) =>
