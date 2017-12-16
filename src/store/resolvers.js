@@ -19,8 +19,7 @@ const bookmarkResolver = id =>
       id,
       name: title,
       details: meta.url || (children.length && `${children.length} bookmarks`),
-      providesChildren: children.length > 0,
-      childResolver: () => bookmarkResolver(id),
+      childResolver: () => children.length > 0 && bookmarkResolver(id),
       type: meta.url
         ? ['public.url', 'tabulous.bookmark']
         : ['tabulous.bookmark-folder'],

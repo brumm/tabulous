@@ -2,7 +2,7 @@ import { observe, observable, useStrict } from 'mobx'
 
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import { TBObject, TBObjectSource } from './TBObjects'
-import * as Tab from './plugins/Tabs'
+import TabSource, { actions } from './plugins/Tabs'
 
 import {
   directObjectResolver,
@@ -13,16 +13,14 @@ import {
 useStrict(true)
 
 class Sources {
-  @observable directObjects = new TBObjectSource(Tab)
+  @observable directObjects = new TBObjectSource(TabSource)
   @observable
   actionObjects = new TBObjectSource({
-    resolve: () => Promise.resolve(Tab.actions),
-    Objekt: TBObject,
+    childResolver: () => Promise.resolve(actions),
   })
   @observable
   indirectObjects = new TBObjectSource({
-    resolve: indirectObjectResolver,
-    Objekt: TBObject,
+    childResolver: indirectObjectResolver,
   })
 
   constructor() {
@@ -38,10 +36,10 @@ class Sources {
       })
     )
 
-    onRemoved(() => this.directObjects.runResolver())
-    onCreated(() => this.directObjects.runResolver())
-    // onUpdated(() => this.directObjects.runResolver())
-    onMoved(() => this.directObjects.runResolver())
+    onRemoved(() => this.directObjects.refreshSources())
+    onCreated(() => this.directObjects.refreshSources())
+    // onUpdated(() => this.directObjects.refreshSources())
+    onMoved(() => this.directObjects.refreshSources())
   }
 
   getActiveSource(index) {

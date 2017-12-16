@@ -25,9 +25,9 @@ export const Item = inject('settings')(
       marked,
       audible,
       settings,
-      providesChildren,
       hideChevron,
       hideDetails,
+      hasChildren,
     }) => (
       <Div
         display="flex"
@@ -89,7 +89,7 @@ export const Item = inject('settings')(
                 alignItems="center"
                 flexShrink={0}
                 marginLeft="auto"
-                visibility={providesChildren ? 'visible' : 'hidden'}
+                visibility={hasChildren ? 'visible' : 'hidden'}
               >
                 <svg
                   width="12px"
@@ -165,7 +165,7 @@ export default class ItemList extends React.Component {
         name={item.name}
         details={item.details}
         style={style}
-        providesChildren={item.providesChildren}
+        hasChildren={item.childResolver}
       />
     )
   }

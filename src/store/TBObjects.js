@@ -12,8 +12,8 @@ export class TBObjectSource {
   @observable input = undefined
   @observable searchTerm = []
 
-  constructor(...resolver) {
-    this.resolver = resolver
+  constructor(...sources) {
+    this.sources = sources
     this.setInput()
   }
 
@@ -71,35 +71,36 @@ export class TBObjectSource {
     this.index = 0
     this.searchTerm = []
     this.input = input
-    this.runResolver(input)
+    this.refreshSources({ input })
   }
 
   @action
   browseToChildren() {
-    this.setResolver(this.selected.childResolver)
+    this.sources = [this.selected]
+    this.refreshSources({ forceHideSourceItem: true })
     this.index = 0
     this.searchTerm = []
   }
 
   @action
-  setResolver(resolver) {
-    this.resolver = resolver
-    this.runResolver()
-  }
-
-  @action
-  runResolver(input = this.input) {
+  refreshSources({ input = this.input, forceHideSourceItem } = {}) {
     this.loading = true
     Promise.all(
-      this.resolver.map(({ resolve, Objekt }) =>
-        resolve(input).then(items => items.map(item => new Objekt(item)))
-      )
+      this.sources.map(Source => {
+        if (!forceHideSourceItem && Source.showSourceItem) {
+          return Source
+        } else if (Source.childResolver) {
+          return Source.childResolver(input)
+        } else {
+          // this should not happen
+          debugger
+        }
+      })
     ).then(
       action(items => {
-        this._items = items.reduce(
-          (collection, item) => collection.concat(item),
-          []
-        )
+        this._items = items
+          .reduce((collection, item) => collection.concat(item), [])
+          .map(item => (item instanceof TBObject ? item : new TBObject(item)))
         this.loading = false
       })
     )
@@ -129,10 +130,11 @@ export class TBObject {
     return this.object.meta || {}
   }
 
-  // direct and indirect concerns
-  get providesChildren() {
-    return this.object.providesChildren
+  get showSourceItem() {
+    return this.object.showSourceItem
   }
+
+  // direct and indirect concerns
   get childResolver() {
     return this.object.childResolver
   }

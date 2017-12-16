@@ -115,7 +115,7 @@ export default class Tabulous extends React.Component {
             activeSource.changeIndex(combo === 'up' ? -1 : 1)
           }}
         />
-        {activeSource.selected.providesChildren && (
+        {activeSource.selected.childResolver && (
           <ComboKeys
             bind={'right'}
             onCombo={({ event }) => {
