@@ -16,7 +16,6 @@ export const PaneWrapper = glamorous.div(({ active, theme }) => ({
   position: 'relative',
   transition: 'all 250ms ease-out',
   zIndex: active ? 2 : 1,
-  alignItems: 'center',
   boxShadow: `
     0 0 0 1px #e0e0e0
   `,
