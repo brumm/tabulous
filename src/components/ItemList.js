@@ -165,7 +165,7 @@ export default class ItemList extends React.Component {
         key={key}
         selected={isSelected}
         marked={isMarked}
-        audible={item.meta.audible}
+        audible={item.meta.audible && !item.meta.muted}
         icon={item.icon}
         name={item.name}
         details={item.details}

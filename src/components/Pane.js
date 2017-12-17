@@ -30,7 +30,7 @@ export const Pane = ({ active, item }) => (
       hideChevron={!active}
       icon={item.icon}
       name={item.name}
-      audible={item.meta.audible}
+      audible={item.meta.audible && !item.meta.muted}
     />
   </PaneWrapper>
 )

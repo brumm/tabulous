@@ -27,7 +27,8 @@ const tabResolver = directObject =>
           type: [TYPES.TAB],
           meta: {
             pinned: tab.pinned,
-            audible: tab.audible && !tab.mutedInfo.muted,
+            audible: tab.audible,
+            muted: tab.mutedInfo.muted,
             windowId: tab.windowId,
           },
         })
@@ -51,24 +52,24 @@ export const tabActions = [
     name: 'Activate',
     details: 'Activate tab and its window',
     icon: defaultActionIcon,
-    directTypes: ['browser.tab'],
+    directTypes: [TYPES.TAB],
     execute: ([tab]) => tab.activate(),
   },
   {
     name: 'Close',
     details: 'Close one or more tabs',
     icon: defaultActionIcon,
-    directTypes: ['browser.tab'],
+    directTypes: [TYPES.TAB],
     execute: tabs =>
       closeTab(
         ...tabs.map(({ id }) => id).filter((el, i, a) => i === a.indexOf(el))
       ),
   },
   {
-    name: 'Move To...',
+    name: 'Move To Window...',
     details: 'Move to another window',
     icon: defaultActionIcon,
-    directTypes: ['browser.tab'],
+    directTypes: [TYPES.TAB],
     indirectTypes: ['browser.window'],
     suggestedObjects: () =>
       getWindows().then(windows => [
@@ -103,28 +104,34 @@ export const tabActions = [
     name: 'Pin',
     details: 'Pin one or more tabs',
     icon: defaultActionIcon,
-    directTypes: ['browser.tab'],
+    directTypes: [TYPES.TAB],
+    displayPredicate: directObject => directObject.meta.pinned === false,
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { pinned: true })),
   },
   {
     name: 'Unpin',
     details: 'Unpin one or more tabs',
     icon: defaultActionIcon,
-    directTypes: ['browser.tab'],
+    directTypes: [TYPES.TAB],
+    displayPredicate: directObject => directObject.meta.pinned === true,
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { pinned: false })),
   },
   {
     name: 'Mute',
     details: 'Mute one or more tabs',
     icon: defaultActionIcon,
-    directTypes: ['browser.tab'],
+    directTypes: [TYPES.TAB],
+    displayPredicate: directObject =>
+      directObject.meta.audible && !directObject.meta.muted,
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { muted: true })),
   },
   {
     name: 'Unmute',
     details: 'Unmute one or more tabs',
     icon: defaultActionIcon,
-    directTypes: ['browser.tab'],
+    directTypes: [TYPES.TAB],
+    displayPredicate: directObject =>
+      directObject.meta.audible && directObject.meta.muted,
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { muted: false })),
   },
 ]
