@@ -16,6 +16,7 @@ export const FancyShadow = glamorous.div({
     position: 'absolute',
     top: '100%',
     left: 0,
+    opacity: 0.5,
     width: '100%',
     height: 8,
     backgroundImage: `
