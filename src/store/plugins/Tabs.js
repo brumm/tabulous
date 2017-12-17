@@ -53,7 +53,6 @@ export const tabActions = [
     details: 'Activate tab and its window',
     icon: defaultActionIcon,
     directTypes: ['browser.tab'],
-    type: ['tabulous.action'],
     execute: ([tab]) => tab.activate(),
   },
   {
@@ -61,7 +60,6 @@ export const tabActions = [
     details: 'Close one or more tabs',
     icon: defaultActionIcon,
     directTypes: ['browser.tab'],
-    type: ['tabulous.action'],
     execute: tabs =>
       closeTab(
         ...tabs.map(({ id }) => id).filter((el, i, a) => i === a.indexOf(el))
@@ -71,7 +69,6 @@ export const tabActions = [
     name: 'Move To...',
     details: 'Move to another window',
     icon: defaultActionIcon,
-    type: ['tabulous.action'],
     directTypes: ['browser.tab'],
     indirectTypes: ['browser.window'],
     suggestedObjects: () =>
@@ -108,7 +105,6 @@ export const tabActions = [
     details: 'Pin one or more tabs',
     icon: defaultActionIcon,
     directTypes: ['browser.tab'],
-    type: ['tabulous.action'],
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { pinned: true })),
   },
   {
@@ -116,7 +112,6 @@ export const tabActions = [
     details: 'Unpin one or more tabs',
     icon: defaultActionIcon,
     directTypes: ['browser.tab'],
-    type: ['tabulous.action'],
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { pinned: false })),
   },
   {
@@ -124,7 +119,6 @@ export const tabActions = [
     details: 'Mute one or more tabs',
     icon: defaultActionIcon,
     directTypes: ['browser.tab'],
-    type: ['tabulous.action'],
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { muted: true })),
   },
   {
@@ -132,7 +126,6 @@ export const tabActions = [
     details: 'Unmute one or more tabs',
     icon: defaultActionIcon,
     directTypes: ['browser.tab'],
-    type: ['tabulous.action'],
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { muted: false })),
   },
 ]
