@@ -78,19 +78,23 @@ export default class TBCatalog {
   @action
   browseToParent() {
     if (this.browsingHistory.length) {
-      const sources = this.browsingHistory.pop()
+      const { sources, index, searchTerm } = this.browsingHistory.pop()
       this.sources = sources
       this.refreshSources({
         forceHideSourceItem: this.browsingHistory.length !== 0,
       })
-      this.index = 0
-      this.searchTerm = []
+      this.index = index
+      this.searchTerm = searchTerm
     }
   }
 
   @action
   browseToChildren() {
-    this.browsingHistory.push(this.sources)
+    this.browsingHistory.push({
+      sources: this.sources,
+      index: this.index,
+      searchTerm: this.searchTerm,
+    })
     this.sources = [this.selected]
     this.refreshSources({ forceHideSourceItem: true })
     this.index = 0
