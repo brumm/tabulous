@@ -3,6 +3,7 @@ import { observe, observable, useStrict } from 'mobx'
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import TBObject from './TBObject'
 import TBCatalog from './TBCatalog'
+
 import TabSource, { tabActions } from './plugins/Tabs'
 import BookmarkSource, { bookmarkActions } from './plugins/Bookmarks'
 

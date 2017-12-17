@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom'
 import { position } from 'polished'
 import { observer } from 'mobx-react'
 
-import { Input, FancyShadow } from 'components/Input'
 import Tabulous from 'components/Tabulous'
 import Settings from './Settings'
 import HeyThere from './HeyThere'

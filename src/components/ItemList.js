@@ -31,8 +31,10 @@ export const Item = inject('settings')(
     }) => (
       <Div
         display="flex"
-        alignItems="stretch"
-        padding="0px 5px 0 10px"
+        flexGrow={1}
+        alignItems="center"
+        paddingLeft={10}
+        paddingRight={10}
         backgroundColor={selected && settings.highlightColor}
         boxShadow={marked && `5px 0 0 ${settings.markedColor} inset`}
         style={style}
@@ -61,35 +63,38 @@ export const Item = inject('settings')(
               />
             </Div>
             <Div
-              marginLeft={!hideDetails && 10}
-              width={hideDetails && 0}
-              marginRight={5}
               display="flex"
+              position="relative"
+              left={10}
+              width="100%"
+              height="100%"
+              marginRight={!hideChevron && (hasChildren ? 15 : 10)}
               flexDirection="column"
               justifyContent="center"
               paddingTop={Math.floor(settings.listItemHeight * 0.18)}
               paddingBottom={Math.floor(settings.listItemHeight * 0.18)}
             >
-              <Ellipsis color={selected && '#fff'}>{name}</Ellipsis>
-              {settings.listItemHeight >= 32 &&
-                details && (
-                  <Ellipsis
-                    marginTop={Math.floor(settings.listItemHeight * 0.09)}
-                    fontSize="smaller"
-                    color={selected ? '#fff' : '#BDBDBD'}
-                    letterSpacing={0.2}
-                  >
-                    {details}
-                  </Ellipsis>
-                )}
+              <Div position="absolute" left={0} right={0}>
+                <Ellipsis color={selected && '#fff'}>{name}</Ellipsis>
+                {settings.listItemHeight >= 32 &&
+                  details && (
+                    <Ellipsis
+                      marginTop={Math.floor(settings.listItemHeight * 0.09)}
+                      fontSize="smaller"
+                      color={selected ? '#fff' : '#BDBDBD'}
+                      letterSpacing={0.2}
+                    >
+                      {details}
+                    </Ellipsis>
+                  )}
+              </Div>
             </Div>
-            {!hideChevron && (
+            {hasChildren && (
               <Div
                 display="flex"
                 alignItems="center"
                 flexShrink={0}
                 marginLeft="auto"
-                visibility={hasChildren ? 'visible' : 'hidden'}
               >
                 <svg
                   width="12px"
