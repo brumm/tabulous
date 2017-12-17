@@ -46,6 +46,7 @@ const Button = glamorous.button(({ theme, primary }) => ({
   backgroundColor: primary ? theme.highlightColor : '#dddddd',
   margin: 5,
   border: 'none',
+  borderRadius: 3,
   color: primary && '#fff',
   flexGrow: 1,
   height: 40,
