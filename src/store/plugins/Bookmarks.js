@@ -18,7 +18,7 @@ const bookmarkResolver = id =>
           name: title,
           details:
             meta.url || (children.length && `${children.length} bookmarks`),
-          childResolver: () => children.length > 0 && bookmarkResolver(id),
+          childResolver: children.length > 0 && (() => bookmarkResolver(id)),
           type: meta.url ? [TYPES.URL, TYPES.BOOKMARK] : [TYPES.FOLDER],
           meta,
         })
@@ -26,15 +26,15 @@ const bookmarkResolver = id =>
   )
 
 export default new TBObject({
+  showSourceItem: true,
   name: 'Bookmarks',
   type: [TYPES.MANAGER],
-  showSourceItem: true,
   childResolver: bookmarkResolver,
 })
 
 class BookmarkNode extends TBObject {
   open() {
-    createTab({ urls: this.url })
+    createTab({ url: this.meta.url })
   }
 }
 
