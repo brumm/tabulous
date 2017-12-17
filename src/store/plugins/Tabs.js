@@ -35,7 +35,6 @@ const tabResolver = directObject =>
   )
 
 export default new TBObject({
-  showSourceItem: true,
   name: 'Tabs',
   type: ['tabulous.source'],
   childResolver: tabResolver,
