@@ -127,6 +127,13 @@ export default class Tabulous extends React.Component {
         {activePaneIndex === 0 && (
           <Fragment>
             <ComboKeys
+              bind={'left'}
+              onCombo={({ event }) => {
+                event.preventDefault()
+                activeSource.browseToParent()
+              }}
+            />
+            <ComboKeys
               bind={transformShortcut(closeTabShortcut)}
               onCombo={({ event }) => {
                 event.preventDefault()
