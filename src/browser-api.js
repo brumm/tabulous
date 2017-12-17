@@ -48,3 +48,4 @@ export const getWindows = () =>
 export const createWindow = (...args) => windows.create(...args)
 
 export const getBookmarks = (id = '0') => bookmarks.getSubTree(id)
+export const removeBookmark = id => bookmarks.remove(id)

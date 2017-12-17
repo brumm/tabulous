@@ -1,5 +1,5 @@
 import TBObject from 'store/TBObject'
-import { getBookmarks, createTab } from 'browser-api'
+import { getBookmarks, removeBookmark, createTab } from 'browser-api'
 import defaultActionIcon from 'img/icon-action'
 
 const TYPES = {
@@ -36,6 +36,9 @@ class BookmarkNode extends TBObject {
   open() {
     createTab({ url: this.meta.url })
   }
+  remove() {
+    removeBookmark(this.id)
+  }
 }
 
 export const bookmarkActions = [
@@ -45,6 +48,13 @@ export const bookmarkActions = [
     icon: defaultActionIcon,
     directTypes: [TYPES.URL],
     execute: bookmarks => bookmarks.forEach(bookmark => bookmark.open()),
+  },
+  {
+    name: 'Remove',
+    details: 'Remove bookmark',
+    icon: defaultActionIcon,
+    directTypes: [TYPES.BOOKMARK],
+    execute: bookmarks => bookmarks.forEach(bookmark => bookmark.remove()),
   },
   {
     name: 'Open Bookmark Manager',
