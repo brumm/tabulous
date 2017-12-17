@@ -6,6 +6,9 @@ import TBCatalog from './TBCatalog'
 
 import TabSource, { tabActions } from './plugins/Tabs'
 import BookmarkSource, { bookmarkActions } from './plugins/Bookmarks'
+import RecentlyClosedSource, {
+  recentlyClosedActions,
+} from './plugins/RecentlyClosed'
 
 import {
   filterActionObjectsForDirectObject,
@@ -15,13 +18,14 @@ import {
 useStrict(true)
 
 class Sources {
-  @observable directObjects = new TBCatalog(TabSource, BookmarkSource)
+  @observable
+  directObjects = new TBCatalog(TabSource, BookmarkSource, RecentlyClosedSource)
 
   @observable
   actionObjects = new TBCatalog({
     childResolver: directObject =>
       filterActionObjectsForDirectObject({
-        actions: [...tabActions, ...bookmarkActions],
+        actions: [...tabActions, ...bookmarkActions, ...recentlyClosedActions],
         directObject,
       }),
   })
@@ -49,7 +53,7 @@ class Sources {
     // or even only themselves
     onRemoved(() => this.directObjects.refreshSources())
     onCreated(() => this.directObjects.refreshSources())
-    // onUpdated(() => this.directObjects.refreshSources())
+    onUpdated(() => this.directObjects.refreshSources())
     onMoved(() => this.directObjects.refreshSources())
   }
 

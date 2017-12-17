@@ -117,7 +117,7 @@ export default class Tabulous extends React.Component {
         />
         {activeSource.selected.childResolver && (
           <ComboKeys
-            bind={'right'}
+            bind={['right', 'space']}
             onCombo={({ event }) => {
               event.preventDefault()
               activeSource.browseToChildren()

@@ -1,4 +1,4 @@
-import { tabs, storage, windows, bookmarks } from 'then-chrome'
+import { tabs, storage, windows, bookmarks, sessions } from 'then-chrome'
 
 export const onRemoved = fn => chrome.tabs.onRemoved.addListener(fn)
 
@@ -49,3 +49,6 @@ export const createWindow = (...args) => windows.create(...args)
 
 export const getBookmarks = (id = '0') => bookmarks.getSubTree(id)
 export const removeBookmark = id => bookmarks.remove(id)
+
+export const getRecentlyClosed = () => sessions.getRecentlyClosed()
+export const restoreRecentlyClosed = sessionId => sessions.restore(sessionId)
