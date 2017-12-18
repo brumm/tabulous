@@ -2,7 +2,7 @@ import glamorous from 'glamorous'
 import * as glamor from 'glamor'
 
 const Pulse = glamorous.div(({ delay = '0s', duration = '1s' }) => ({
-  border: '2px solid ActiveBorder',
+  border: '2px solid #5F9BEE',
   borderRadius: 30,
   position: 'absolute',
   top: 0,
