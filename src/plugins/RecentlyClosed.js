@@ -25,7 +25,7 @@ const recentlyClosedResolver = directObject =>
     )
   )
 
-export default new TBObject({
+const source = new TBObject({
   showSourceItem: true,
   name: 'Recently Closed',
   type: ['tabulous.source'],
@@ -38,7 +38,7 @@ class RecentlyClosedTab extends TBObject {
   }
 }
 
-export const recentlyClosedActions = [
+const actions = [
   {
     name: 'Restore',
     details: 'Restore recently closed tab',
@@ -47,3 +47,8 @@ export const recentlyClosedActions = [
     execute: items => items.forEach(item => item.restore()),
   },
 ]
+
+export default {
+  source,
+  actions,
+}

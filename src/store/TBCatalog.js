@@ -13,7 +13,7 @@ export default class TBCatalog {
   @observable searchTerm = []
   browsingHistory = []
 
-  constructor(...sources) {
+  constructor(sources) {
     this.sources = sources
     this.setInput()
   }

@@ -35,7 +35,7 @@ const tabResolver = directObject =>
     )
   )
 
-export default new TBObject({
+const source = new TBObject({
   name: 'Tabs',
   type: ['tabulous.source'],
   childResolver: tabResolver,
@@ -47,7 +47,7 @@ class Tab extends TBObject {
   }
 }
 
-export const tabActions = [
+const actions = [
   {
     name: 'Activate',
     details: 'Activate tab and its window',
@@ -135,3 +135,8 @@ export const tabActions = [
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { muted: false })),
   },
 ]
+
+export default {
+  source,
+  actions,
+}

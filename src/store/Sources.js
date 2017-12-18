@@ -4,12 +4,6 @@ import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import TBObject from './TBObject'
 import TBCatalog from './TBCatalog'
 
-import TabSource, { tabActions } from './plugins/Tabs'
-import BookmarkSource, { bookmarkActions } from './plugins/Bookmarks'
-import RecentlyClosedSource, {
-  recentlyClosedActions,
-} from './plugins/RecentlyClosed'
-
 import {
   filterActionObjectsForDirectObject,
   suggestedIndirectObjectsForActionObject,
@@ -18,25 +12,36 @@ import {
 useStrict(true)
 
 class Sources {
-  @observable
-  directObjects = new TBCatalog(TabSource, BookmarkSource, RecentlyClosedSource)
+  @observable directObjects = undefined
+  @observable actionObjects = undefined
+  @observable indirectObjects = undefined
 
-  @observable
-  actionObjects = new TBCatalog({
-    childResolver: directObject =>
-      filterActionObjectsForDirectObject({
-        actions: [...tabActions, ...bookmarkActions, ...recentlyClosedActions],
-        directObject,
+  constructor(plugins) {
+    const { sources, actions } = plugins.reduce(
+      ({ sources, actions }, plugin) => ({
+        sources: [...sources, plugin.source],
+        actions: [...actions, ...plugin.actions],
       }),
-  })
+      { sources: [], actions: [] }
+    )
 
-  @observable
-  indirectObjects = new TBCatalog({
-    childResolver: actionObject =>
-      suggestedIndirectObjectsForActionObject(actionObject),
-  })
+    this.directObjects = new TBCatalog(sources)
+    this.actionObjects = new TBCatalog([
+      {
+        childResolver: directObject =>
+          filterActionObjectsForDirectObject({
+            actions,
+            directObject,
+          }),
+      },
+    ])
+    this.indirectObjects = new TBCatalog([
+      {
+        childResolver: actionObject =>
+          suggestedIndirectObjectsForActionObject(actionObject),
+      },
+    ])
 
-  constructor() {
     observe(this.directObjects, 'selected', ({ newValue }) =>
       this.actionObjects.setInput(newValue)
     )
@@ -72,5 +77,4 @@ class Sources {
   }
 }
 
-const sources = (window.sources = new Sources())
-export default sources
+export default Sources

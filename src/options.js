@@ -11,7 +11,13 @@ import { Provider } from 'mobx-react'
 import Options from 'components/Options'
 import ErrorBoundary from 'components/ErrorBoundary'
 import settings from 'store/Settings'
-import sources from 'store/Sources'
+import Sources from 'store/Sources'
+
+import Tabs from 'plugins/Tabs'
+import Bookmarks from 'plugins/Bookmarks'
+import RecentlyClosed from 'plugins/RecentlyClosed'
+
+const sources = new Sources([Tabs, Bookmarks, RecentlyClosed])
 
 render(
   <Router>

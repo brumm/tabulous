@@ -18,7 +18,13 @@ import { getTabs, getCurrentTab, selectTab, closeTab } from 'browser-api'
 import ErrorBoundary from 'components/ErrorBoundary'
 import Tabulous from 'components/Tabulous'
 import settings from 'store/Settings'
-import sources from 'store/Sources'
+import Sources from 'store/Sources'
+
+import Tabs from 'plugins/Tabs'
+import Bookmarks from 'plugins/Bookmarks'
+import RecentlyClosed from 'plugins/RecentlyClosed'
+
+const sources = new Sources([Tabs, Bookmarks, RecentlyClosed])
 
 // the chrome extension window collapses to a tiny size
 // if we render immediately, so we'll delay by 10ms :/

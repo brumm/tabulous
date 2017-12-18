@@ -25,7 +25,7 @@ const bookmarkResolver = id =>
     )
   )
 
-export default new TBObject({
+const source = new TBObject({
   showSourceItem: true,
   name: 'Bookmarks',
   type: [TYPES.MANAGER],
@@ -41,7 +41,7 @@ class BookmarkNode extends TBObject {
   }
 }
 
-export const bookmarkActions = [
+const actions = [
   {
     name: 'Open',
     details: 'Open url in new tab',
@@ -76,3 +76,8 @@ export const bookmarkActions = [
     execute: console.log,
   },
 ]
+
+export default {
+  source,
+  actions,
+}
