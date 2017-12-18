@@ -78,18 +78,18 @@ export default class Tabulous extends React.Component {
 
     return (
       <Container>
-        <ComboKeys
-          // generate ['a', ..., 'z']
-          bind={Array.from({ length: 26 }, (_, i) =>
-            String.fromCharCode(97 + i)
-          )}
-          onCombo={({ event, combo }) => {
-            event.preventDefault()
-            activeSource.pushSearchCharacter(combo)
-          }}
-        />
         {advancedMode && (
           <Fragment>
+            <ComboKeys
+              // generate ['a', ..., 'z']
+              bind={Array.from({ length: 26 }, (_, i) =>
+                String.fromCharCode(97 + i)
+              )}
+              onCombo={({ event, combo }) => {
+                event.preventDefault()
+                activeSource.pushSearchCharacter(combo)
+              }}
+            />
             <ComboKeys
               bind={['tab', 'shift+tab']}
               onCombo={({ event }) => {
@@ -104,6 +104,24 @@ export default class Tabulous extends React.Component {
                 activeSource.clearSearchTerm()
               }}
             />
+            {activePaneIndex === 0 && (
+              <ComboKeys
+                bind={'left'}
+                onCombo={({ event }) => {
+                  event.preventDefault()
+                  activeSource.browseToParent()
+                }}
+              />
+            )}
+            {activeSource.selected.childResolver && (
+              <ComboKeys
+                bind={['right', 'space']}
+                onCombo={({ event }) => {
+                  event.preventDefault()
+                  activeSource.browseToChildren()
+                }}
+              />
+            )}
           </Fragment>
         )}
         <ComboKeys
@@ -120,24 +138,8 @@ export default class Tabulous extends React.Component {
             activeSource.changeIndex(combo === 'up' ? -1 : 1)
           }}
         />
-        {activeSource.selected.childResolver && (
-          <ComboKeys
-            bind={['right', 'space']}
-            onCombo={({ event }) => {
-              event.preventDefault()
-              activeSource.browseToChildren()
-            }}
-          />
-        )}
         {activePaneIndex === 0 && (
           <Fragment>
-            <ComboKeys
-              bind={'left'}
-              onCombo={({ event }) => {
-                event.preventDefault()
-                activeSource.browseToParent()
-              }}
-            />
             <ComboKeys
               bind={transformShortcut(closeTabShortcut)}
               onCombo={({ event }) => {
