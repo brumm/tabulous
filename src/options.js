@@ -5,7 +5,7 @@ import 'analytics'
 import React from 'react'
 import { render } from 'react-dom'
 import { ThemeProvider } from 'glamorous'
-import { HashRouter as Router } from 'react-router-dom'
+import { HashRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 
 import Options from 'components/Options'
@@ -22,7 +22,15 @@ render(
     <Provider settings={settings}>
       <ErrorBoundary settings={settings}>
         <ThemeProvider theme={settings}>
-          <Options settings={settings} sources={sources} />
+          <Route
+            render={({ location }) => (
+              <Options
+                settings={settings}
+                sources={sources}
+                location={location}
+              />
+            )}
+          />
         </ThemeProvider>
       </ErrorBoundary>
     </Provider>
