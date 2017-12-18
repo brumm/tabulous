@@ -101,7 +101,9 @@ export default class Tabulous extends React.Component {
               bind="backspace"
               onCombo={({ event }) => {
                 event.preventDefault()
-                activeSource.clearSearchTerm()
+                if (activeSource.searchTerm.length) {
+                  activeSource.clearSearchTerm()
+                }
               }}
             />
             {activePaneIndex === 0 && (

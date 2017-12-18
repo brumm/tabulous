@@ -51,6 +51,11 @@ export default class TBCatalog {
 
   @action
   pushSearchCharacter(character) {
+    if (this.searchTerm.length === 0) {
+      this.refreshSources({
+        forceHideSourceItem: true,
+      })
+    }
     this.index = 0
     this.searchTerm.push(character)
   }
@@ -63,6 +68,7 @@ export default class TBCatalog {
 
   @action
   clearSearchTerm() {
+    this.refreshSources()
     this.index = 0
     this.searchTerm = []
   }
