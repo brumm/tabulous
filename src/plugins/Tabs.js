@@ -13,6 +13,7 @@ import defaultActionIcon from 'img/icon-action'
 
 const TYPES = {
   TAB: 'browser.tab',
+  WINDOW: 'browser.window',
 }
 
 const tabResolver = directObject =>
@@ -70,7 +71,7 @@ const actions = [
     details: 'Move to another window',
     icon: defaultActionIcon,
     directTypes: [TYPES.TAB],
-    indirectTypes: ['browser.window'],
+    indirectTypes: [TYPES.WINDOW],
     suggestedObjects: () =>
       getWindows().then(windows => [
         ...windows.map(({ id, ..._window }, index) => ({
@@ -78,12 +79,12 @@ const actions = [
           name: `Window ${index + 1}`,
           ...{ name: _window.name },
           details: `${_window.tabs.length} tabs`,
-          type: ['browser.window'],
+          type: [TYPES.WINDOW],
           meta: _window,
         })),
         {
           name: `New Window`,
-          type: ['browser.window'],
+          type: [TYPES.WINDOW],
         },
       ]),
     execute: (tabs, { id: windowId }) => {
@@ -91,12 +92,14 @@ const actions = [
         moveTabs(tabs.map(({ id }) => id), { windowId, index: -1 })
       } else {
         const [{ id: tabId }, ...secondBatchOfTabIds] = tabs
-        createWindow({ tabId }).then(({ id }) =>
-          moveTabs(secondBatchOfTabIds.map(({ id }) => id), {
-            windowId: id,
-            index: -1,
-          })
-        )
+        createWindow({ tabId }).then(({ id }) => {
+          if (secondBatchOfTabIds.length) {
+            moveTabs(secondBatchOfTabIds.map(({ id }) => id), {
+              windowId: id,
+              index: -1,
+            })
+          }
+        })
       }
     },
   },
