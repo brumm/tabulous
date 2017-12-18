@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { withRouter, Route } from 'react-router-dom'
 import { position } from 'polished'
 import { observer } from 'mobx-react'
 
@@ -15,6 +15,7 @@ import {
 } from './Layout'
 
 @observer
+@withRouter
 export default class Options extends React.Component {
   render() {
     const {
