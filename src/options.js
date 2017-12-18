@@ -13,11 +13,9 @@ import ErrorBoundary from 'components/ErrorBoundary'
 import settings from 'store/Settings'
 import Sources from 'store/Sources'
 
-import Tabs from 'plugins/Tabs'
-import Bookmarks from 'plugins/Bookmarks'
-import RecentlyClosed from 'plugins/RecentlyClosed'
+import Tutorial from './components/Options/TutorialPlugin'
 
-const sources = new Sources([Tabs, Bookmarks, RecentlyClosed])
+const sources = (window.sources = new Sources([Tutorial]))
 
 render(
   <Router>

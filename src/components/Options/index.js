@@ -6,7 +6,6 @@ import { observer } from 'mobx-react'
 import Tabulous from 'components/Tabulous'
 import Settings from './Settings'
 import HeyThere from './HeyThere'
-import placeholderTabs from './placeholderTabs'
 import {
   Container,
   Panel,
@@ -17,13 +16,8 @@ import {
 
 @observer
 export default class Options extends React.Component {
-  state = {
-    closedTabIds: [],
-  }
-
   render() {
     const {
-      dispatch,
       settings: {
         listWidth,
         listItemHeight,
@@ -33,11 +27,7 @@ export default class Options extends React.Component {
         advancedMode,
       },
     } = this.props
-    const { closedTabIds } = this.state
     const listHeight = Math.ceil(listItemHeight * maxVisibleResults)
-    const filteredTabs = placeholderTabs.filter(
-      ({ id }) => !closedTabIds.includes(id)
-    )
 
     return (
       <Container>
