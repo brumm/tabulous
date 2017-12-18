@@ -15,6 +15,10 @@ const Container = glamorous.div(({ theme }) => ({
 
 @observer
 export default class Tabulous extends React.Component {
+  static defaultProps = {
+    closeTab,
+  }
+
   state = {
     activePaneIndex: 0,
     markedTabIds: [],
@@ -51,6 +55,7 @@ export default class Tabulous extends React.Component {
   render() {
     const {
       sources,
+      closeTab,
       settings: {
         highlightColor,
         markedColor,

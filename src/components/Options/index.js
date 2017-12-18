@@ -50,6 +50,7 @@ export default class Options extends React.Component {
               <Tabulous
                 settings={this.props.settings}
                 sources={this.props.sources}
+                closeTab={(...args) => console.log('closeTab', ...args)}
               />
             </FakePopupFrame>
           </div>
