@@ -1,7 +1,6 @@
 import 'css/reset.css'
 import 'css/defaults.css'
 
-import 'analytics'
 import React from 'react'
 import { render } from 'react-dom'
 import { ThemeProvider } from 'glamorous'
