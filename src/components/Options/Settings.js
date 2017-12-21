@@ -194,13 +194,15 @@ export default class Settings extends React.Component {
           <Value>{maxVisibleResults}</Value>
         </Setting>
 
-        <Setting label="advanced mode">
-          <SettingsInput
-            type="checkbox"
-            checked={advancedMode}
-            onChange={() => set({ advancedMode: !advancedMode })}
-          />
-        </Setting>
+        {process.env.NODE_ENV === 'development' && (
+          <Setting label="advanced mode">
+            <SettingsInput
+              type="checkbox"
+              checked={advancedMode}
+              onChange={() => set({ advancedMode: !advancedMode })}
+            />
+          </Setting>
+        )}
 
         <Setting noBorder style={{ marginTop: 50 }}>
           <Button
