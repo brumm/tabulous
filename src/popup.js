@@ -18,6 +18,7 @@ import { getCurrentTab, storageGet } from 'browser-api'
 import ErrorBoundary from 'components/ErrorBoundary'
 import Tabulous from 'components/Tabulous'
 import Sources from 'store/Sources'
+import { initialState } from 'store/Settings'
 
 import Tabs from 'plugins/Tabs'
 import Bookmarks from 'plugins/Bookmarks'
@@ -30,6 +31,7 @@ Promise.all([
   // if we render immediately, so we'll delay by 10ms :/
   delay(70),
 ]).then(([{ index }, settings]) => {
+  settings = Object.assign(initialState, settings)
   const sources = new Sources(
     settings.advancedMode ? [Tabs, Bookmarks, RecentlyClosed] : [Tabs]
   )
