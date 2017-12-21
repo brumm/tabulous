@@ -28,7 +28,7 @@ Promise.all([
   storageGet(),
   // the chrome extension window collapses to a tiny size
   // if we render immediately, so we'll delay by 10ms :/
-  delay(10),
+  delay(70),
 ]).then(([{ index }, settings]) => {
   const sources = new Sources(
     settings.advancedMode ? [Tabs, Bookmarks, RecentlyClosed] : [Tabs]
