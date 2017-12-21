@@ -7,50 +7,42 @@ import 'img/icon-32.png'
 import 'img/icon-48.png'
 import 'img/icon-128.png'
 
-import 'analytics'
 import React from 'react'
 import { render } from 'react-dom'
 import glamorous, { ThemeProvider } from 'glamorous'
 import delay from 'delay'
+import { Provider } from 'mobx-react'
 
-import { getTabs, getCurrentTab, selectTab, closeTab } from 'chrome'
-import { AppStateProvider, AppState, Middleware } from 'store/AppState'
-import SyncWithCurrentWindowTabs from 'store/SyncWithCurrentWindowTabs'
-import SyncWithStorage from 'store/SyncWithStorage'
-import reducer, { initialState } from 'store/reducer'
-import Popup from 'components/Popup'
+import { getCurrentTab, storageGet } from 'browser-api'
 import ErrorBoundary from 'components/ErrorBoundary'
+import Tabulous from 'components/Tabulous'
+import Sources from 'store/Sources'
+import { initialState } from 'store/Settings'
 
-const selectTabAndClosePopup = tab => selectTab(tab).then(() => window.close())
+import Tabs from 'plugins/Tabs'
+import Bookmarks from 'plugins/Bookmarks'
+import RecentlyClosed from 'plugins/RecentlyClosed'
 
-// the chrome extension window collapses to a tiny size
-// if we render immediately, so we'll delay by 10ms :/
-delay(10)
-  .then(getCurrentTab)
-  .then(({ index, windowId }) =>
-    render(
-      <AppStateProvider defaultValue={initialState} reducer={reducer}>
-        <Middleware component={SyncWithStorage}>
-          <Middleware component={SyncWithCurrentWindowTabs}>
-            <AppState>
-              {({ value: { tabs, settings } }) => (
-                <ErrorBoundary settings={settings}>
-                  <ThemeProvider theme={settings}>
-                    <Popup
-                      forceFocus
-                      initialTabIndex={index}
-                      currentWindowId={windowId}
-                      tabs={tabs}
-                      settings={settings}
-                      actions={{ selectTabAndClosePopup, closeTab }}
-                    />
-                  </ThemeProvider>
-                </ErrorBoundary>
-              )}
-            </AppState>
-          </Middleware>
-        </Middleware>
-      </AppStateProvider>,
-      window.document.getElementById('app-container')
-    )
+Promise.all([
+  getCurrentTab(),
+  storageGet(),
+  // the chrome extension window collapses to a tiny size
+  // if we render immediately, so we'll delay by 10ms :/
+  delay(70),
+]).then(([{ index }, settings]) => {
+  settings = Object.assign(initialState, settings)
+  const sources = new Sources(
+    settings.advancedMode ? [Tabs, Bookmarks, RecentlyClosed] : [Tabs]
   )
+  sources.directObjects.setIndex(index)
+  render(
+    <Provider settings={settings}>
+      <ErrorBoundary settings={settings}>
+        <ThemeProvider theme={settings}>
+          <Tabulous settings={settings} sources={sources} />
+        </ThemeProvider>
+      </ErrorBoundary>
+    </Provider>,
+    window.document.getElementById('app-container')
+  )
+})

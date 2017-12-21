@@ -40,8 +40,17 @@ export default class ShortcutPicker extends React.Component {
     const oldValue = e.target.value
     const newValue = event2string(e)
 
+    if (newValue === 'Escape') {
+      this.component.blur()
+    }
+
     const { hasModifier, hasKey, map: { modifiers } } = eventDetails(e)
-    const externalValidation = validate({ hasModifier, hasKey, ...modifiers })
+    const externalValidation = validate({
+      key: newValue,
+      hasModifier,
+      hasKey,
+      ...modifiers,
+    })
     const isValid = (!keyNeeded || hasKey) && (!modifierNeeded || hasModifier)
 
     if (isValid && externalValidation) {
@@ -74,6 +83,7 @@ export default class ShortcutPicker extends React.Component {
       <Component
         type="text"
         placeholder={focused ? 'Type shortcut' : 'Click to record shortcut'}
+        innerRef={node => (this.component = node)}
         value={defaultValue || value}
         onKeyDown={this.keyDown}
         onFocus={() =>

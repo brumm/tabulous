@@ -2,16 +2,15 @@ import React from 'react'
 import glamorous, { Div, Label } from 'glamorous'
 import { transparentize, selection } from 'polished'
 
-import { initialState } from 'store/reducer'
+import { initialState } from 'store/Settings'
 import ShortcutChooser from 'components/ShortcutChooser'
 
-import { storageSet } from 'chrome'
+import { storageSet } from 'browser-api'
 
 const MAX_POPUP_WIDTH = 800
 const MAX_POPUP_HEIGHT = 600
 
 const SettingsFrame = glamorous.div({
-  width: '35vw',
   backgroundColor: '#fafafa',
   fontFamily: 'Roboto',
   fontSize: 14,
@@ -31,6 +30,7 @@ const ShortcutInput = glamorous.input(({ theme }) => ({
   background: '#fff',
   border: '1px solid #dddddd',
   '&:focus': {
+    color: theme.highlightColor,
     border: `1px solid ${theme.highlightColor}`,
     boxShadow: `0 0 0 4px ${transparentize(0.7, theme.highlightColor)}`,
   },
@@ -46,6 +46,7 @@ const Button = glamorous.button(({ theme, primary }) => ({
   backgroundColor: primary ? theme.highlightColor : '#dddddd',
   margin: 5,
   border: 'none',
+  borderRadius: 3,
   color: primary && '#fff',
   flexGrow: 1,
   height: 40,
@@ -53,24 +54,24 @@ const Button = glamorous.button(({ theme, primary }) => ({
 
 const Setting = ({ noBorder, label, children, style }) => (
   <Div
-    margin={20}
-    padding={10}
+    margin="5px 0px"
+    padding={15}
     overflow="visible"
     borderBottom={noBorder || '1px solid #dddddd'}
     {...style}
   >
-    <Label display="block" textTransform="capitalize">
+    <Label display="block" textTransform="capitalize" overflow="visible">
       {label}
+      <Div
+        marginTop={10}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        overflow="visible"
+      >
+        {children}
+      </Div>
     </Label>
-    <Div
-      marginTop={10}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      overflow="visible"
-    >
-      {children}
-    </Div>
   </Div>
 )
 
@@ -79,6 +80,7 @@ export default class Settings extends React.Component {
     const {
       dispatch,
       settings: {
+        advancedMode,
         listWidth,
         listItemHeight,
         maxVisibleResults,
@@ -86,7 +88,8 @@ export default class Settings extends React.Component {
         markedColor,
         markAllTabsShortcut,
         markTabShortcut,
-        closeTabSortcut,
+        closeTabShortcut,
+        set,
       },
     } = this.props
 
@@ -108,11 +111,7 @@ export default class Settings extends React.Component {
             validate={validate}
             component={ShortcutInput}
             defaultValue={markTabShortcut}
-            onUpdate={markTabShortcut =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { markTabShortcut },
-              })}
+            onUpdate={markTabShortcut => set({ markTabShortcut })}
           />
           <Value />
         </Setting>
@@ -121,12 +120,8 @@ export default class Settings extends React.Component {
           <ShortcutChooser
             validate={validate}
             component={ShortcutInput}
-            defaultValue={closeTabSortcut}
-            onUpdate={closeTabSortcut =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { closeTabSortcut },
-              })}
+            defaultValue={closeTabShortcut}
+            onUpdate={closeTabShortcut => set({ closeTabShortcut })}
           />
           <Value />
         </Setting>
@@ -136,11 +131,7 @@ export default class Settings extends React.Component {
             validate={validate}
             component={ShortcutInput}
             defaultValue={markAllTabsShortcut}
-            onUpdate={markAllTabsShortcut =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { markAllTabsShortcut },
-              })}
+            onUpdate={markAllTabsShortcut => set({ markAllTabsShortcut })}
           />
           <Value />
         </Setting>
@@ -149,11 +140,7 @@ export default class Settings extends React.Component {
           <SettingsInput
             type="color"
             value={highlightColor}
-            onChange={({ target: { value } }) =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { highlightColor: value },
-              })}
+            onChange={({ target: { value } }) => set({ highlightColor: value })}
           />
           <Value>{`${highlightColor}`}</Value>
         </Setting>
@@ -162,11 +149,7 @@ export default class Settings extends React.Component {
           <SettingsInput
             type="color"
             value={markedColor}
-            onChange={({ target: { value } }) =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { markedColor: value },
-              })}
+            onChange={({ target: { value } }) => set({ markedColor: value })}
           />
           <Value>{`${markedColor}`}</Value>
         </Setting>
@@ -178,10 +161,7 @@ export default class Settings extends React.Component {
             max={MAX_POPUP_WIDTH}
             value={listWidth}
             onChange={({ target: { valueAsNumber } }) =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { listWidth: valueAsNumber },
-              })}
+              set({ listWidth: valueAsNumber })}
           />
           <Value>{`${listWidth}px`}</Value>
         </Setting>
@@ -193,10 +173,7 @@ export default class Settings extends React.Component {
             max={45}
             value={listItemHeight}
             onChange={({ target: { valueAsNumber } }) =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { listItemHeight: valueAsNumber },
-              })}
+              set({ listItemHeight: valueAsNumber })}
           />
           <Value>{`${listItemHeight}px`}</Value>
         </Setting>
@@ -212,22 +189,26 @@ export default class Settings extends React.Component {
             step={1}
             value={maxVisibleResults}
             onChange={({ target: { valueAsNumber } }) =>
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: { maxVisibleResults: valueAsNumber },
-              })}
+              set({ maxVisibleResults: valueAsNumber })}
           />
           <Value>{maxVisibleResults}</Value>
         </Setting>
 
+        {process.env.NODE_ENV === 'development' && (
+          <Setting label="advanced mode">
+            <SettingsInput
+              type="checkbox"
+              checked={advancedMode}
+              onChange={() => set({ advancedMode: !advancedMode })}
+            />
+          </Setting>
+        )}
+
         <Setting noBorder style={{ marginTop: 50 }}>
           <Button
             onClick={() => {
-              storageSet(initialState.settings)
-              dispatch({
-                type: 'SETTINGS_CHANGE',
-                value: initialState.settings,
-              })
+              storageSet(initialState)
+              set(initialState)
             }}
           >
             Reset to defaults
