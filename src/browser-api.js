@@ -48,7 +48,8 @@ export const getWindows = () =>
 export const createWindow = (...args) => windows.create(...args)
 
 export const getBookmarks = (id = '0') => bookmarks.getSubTree(id)
-export const removeBookmark = id => bookmarks.remove(id)
+export const removeBookmark = id => bookmarks.removeTree(id)
+export const createBookmark = (...args) => bookmarks.create(...args)
 
 export const getRecentlyClosed = () => sessions.getRecentlyClosed()
 export const restoreRecentlyClosed = sessionId => sessions.restore(sessionId)

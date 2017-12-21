@@ -1,6 +1,7 @@
 import TBObject from 'store/TBObject'
 import defaultActionIcon from 'img/icon-action'
 import placeholderTabs from './placeholderTabs'
+import { uniqIds } from 'utils'
 
 const TYPES = {
   TAB: 'browser.tab',
@@ -59,10 +60,7 @@ const actions = [
     details: 'Close one or more tabs',
     icon: defaultActionIcon,
     directTypes: [TYPES.TAB],
-    execute: tabs =>
-      closeTab(
-        ...tabs.map(({ id }) => id).filter((el, i, a) => i === a.indexOf(el))
-      ),
+    execute: tabs => closeTab(...tabs.map(({ id }) => id)),
   },
   {
     name: 'Move To Window...',

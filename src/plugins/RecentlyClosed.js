@@ -8,7 +8,7 @@ const TYPES = {
 
 const recentlyClosedResolver = directObject =>
   getRecentlyClosed().then(items =>
-    items.map(
+    items.filter(({ tab }) => tab).map(
       ({ tab }) =>
         new RecentlyClosedTab({
           id: tab.id,

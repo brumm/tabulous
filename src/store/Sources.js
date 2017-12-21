@@ -3,6 +3,7 @@ import { observe, observable, useStrict } from 'mobx'
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import TBObject from './TBObject'
 import TBCatalog from './TBCatalog'
+import { uniqIds } from 'utils'
 
 import {
   filterActionObjectsForDirectObject,
@@ -68,10 +69,10 @@ class Sources {
 
   execute(markedTabIds) {
     this.actionObjects.selected.execute(
-      [
+      uniqIds([
         this.directObjects.selected,
         ...this.directObjects.findById(...markedTabIds),
-      ],
+      ]),
       this.indirectObjects.selected
     )
   }

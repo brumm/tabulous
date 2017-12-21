@@ -10,10 +10,12 @@ import {
   updateTab,
 } from 'browser-api'
 import defaultActionIcon from 'img/icon-action'
+import { uniqIds } from 'utils'
 
 const TYPES = {
   TAB: 'browser.tab',
   WINDOW: 'browser.window',
+  URL: 'public.url',
 }
 
 const tabResolver = directObject =>
@@ -25,12 +27,13 @@ const tabResolver = directObject =>
           name: tab.title,
           details: tab.url,
           icon: tab.favIconUrl,
-          type: [TYPES.TAB],
+          type: [TYPES.TAB, TYPES.URL],
           meta: {
             pinned: tab.pinned,
             audible: tab.audible,
             muted: tab.mutedInfo.muted,
             windowId: tab.windowId,
+            url: tab.url,
           },
         })
     )
@@ -61,10 +64,7 @@ const actions = [
     details: 'Close one or more tabs',
     icon: defaultActionIcon,
     directTypes: [TYPES.TAB],
-    execute: tabs =>
-      closeTab(
-        ...tabs.map(({ id }) => id).filter((el, i, a) => i === a.indexOf(el))
-      ),
+    execute: tabs => closeTab(...tabs.map(({ id }) => id)),
   },
   {
     name: 'Move To Window...',
@@ -135,6 +135,22 @@ const actions = [
     displayPredicate: directObject =>
       directObject.meta.audible && directObject.meta.muted,
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { muted: false })),
+  },
+  {
+    name: 'Distribute tabs horizontally',
+    details: 'Moves each tab in its own window, distributed horizontally',
+    icon: defaultActionIcon,
+    directTypes: [TYPES.TAB],
+    execute: tabs =>
+      tabs.forEach(({ id }, index) =>
+        createWindow({
+          tabId: id,
+          height: screen.availHeight,
+          width: Math.floor(screen.width / tabs.length),
+          top: 0,
+          left: index * Math.floor(screen.width / tabs.length),
+        })
+      ),
   },
 ]
 

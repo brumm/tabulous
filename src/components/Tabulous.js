@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 import ComboKeys from 'react-combokeys'
 
 import { closeTab } from 'browser-api'
-import { wrapAround, transformShortcut } from 'utils'
+import { wrapAround, transformShortcut, uniqIds } from 'utils'
 import Input, { FancyShadow } from 'components/Input'
 import { Pane, PaneContainer } from 'components/Pane'
 import ItemList from 'components/ItemList'
@@ -106,23 +106,25 @@ export default class Tabulous extends React.Component {
                 }
               }}
             />
-            {activePaneIndex === 0 && (
-              <ComboKeys
-                bind={'left'}
-                onCombo={({ event }) => {
-                  event.preventDefault()
-                  activeSource.browseToParent()
-                }}
-              />
-            )}
-            {activeSource.selected.childResolver && (
-              <ComboKeys
-                bind={['right', 'space']}
-                onCombo={({ event }) => {
-                  event.preventDefault()
-                  activeSource.browseToChildren()
-                }}
-              />
+            {activePaneIndex !== 1 && (
+              <Fragment>
+                <ComboKeys
+                  bind={'left'}
+                  onCombo={({ event }) => {
+                    event.preventDefault()
+                    activeSource.browseToParent()
+                  }}
+                />
+                {activeSource.selected.childResolver && (
+                  <ComboKeys
+                    bind={['right', 'space']}
+                    onCombo={({ event }) => {
+                      event.preventDefault()
+                      activeSource.browseToChildren()
+                    }}
+                  />
+                )}
+              </Fragment>
             )}
           </Fragment>
         )}
@@ -146,10 +148,10 @@ export default class Tabulous extends React.Component {
               bind={transformShortcut(closeTabShortcut)}
               onCombo={({ event }) => {
                 event.preventDefault()
-                const tabIds = [
+                const tabIds = uniqIds([
                   activeSource.selected.id,
                   ...markedTabIds,
-                ].filter((el, i, a) => i === a.indexOf(el))
+                ])
                 closeTab(...tabIds)
               }}
             />
@@ -217,7 +219,7 @@ export default class Tabulous extends React.Component {
             markedTabIds: markedTabIds.length,
           }}
           noRowsMessage={noRowsMessage}
-          markedTabIds={markedTabIds}
+          markedTabIds={activePaneIndex === 0 ? markedTabIds : []}
           loading={activeSource.loading}
           width={listWidth}
           height={Math.min(
