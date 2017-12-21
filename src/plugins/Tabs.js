@@ -76,8 +76,7 @@ const actions = [
       getWindows().then(windows => [
         ...windows.map(({ id, ..._window }, index) => ({
           id,
-          name: `Window ${index + 1}`,
-          ...{ name: _window.name },
+          name: _window.name ? _window.name : `Window ${index + 1}`,
           details: `${_window.tabs.length} tabs`,
           type: [TYPES.WINDOW],
           meta: _window,
