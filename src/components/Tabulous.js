@@ -209,7 +209,8 @@ export default class Tabulous extends React.Component {
               placeholder="Search"
               innerRef={node => (this.InputNode = node)}
               onChange={({ target: { value } }) =>
-                activeSource.setSearchTerm(value.split())}
+                activeSource.setSearchTerm(value.split())
+              }
             />
           )}
         </FancyShadow>

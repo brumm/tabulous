@@ -89,11 +89,13 @@ export default class ShortcutPicker extends React.Component {
         onFocus={() =>
           this.setState({
             focused: true,
-          })}
+          })
+        }
         onBlur={() =>
           this.setState({
             focused: false,
-          })}
+          })
+        }
         {...inputProps}
       />
     )

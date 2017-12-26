@@ -44,10 +44,11 @@ class Settings {
   }
 
   @action
-  set = settings =>
+  set = settings => {
     Object.keys(settings).forEach(key => {
       this[key] = settings[key]
-    });
+    })
+  }
 }
 
 export default new Settings()

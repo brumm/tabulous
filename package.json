@@ -9,6 +9,14 @@
     "zip": "zip -r -j build ./build",
     "bump": "npm version patch -m '%s'"
   },
+  "prettier": {
+    "printWidth": 80,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "semi": false,
+    "jsxBracketSameLine": false,
+    "bracketSpacing": true
+  },
   "dependencies": {
     "delay": "^2.0.0",
     "glamor": "^2.20.40",
