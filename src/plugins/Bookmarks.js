@@ -145,7 +145,7 @@ const actions = [
           tabs.map(({ name, meta: { url } }, index) =>
             createBookmark({ parentId: id, index, url, title: name })
           )
-        )
+        ).then(() => tabs.forEach(tab => tab.close()))
       ),
   },
 ]
