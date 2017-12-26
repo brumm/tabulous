@@ -1,6 +1,7 @@
 import React from 'react'
 import glamorous, { Div, Label } from 'glamorous'
 import { transparentize, selection } from 'polished'
+import { observer } from 'mobx-react'
 
 import { initialState } from 'store/Settings'
 import ShortcutChooser from 'components/ShortcutChooser'
@@ -75,6 +76,7 @@ const Setting = ({ noBorder, label, children, style }) => (
   </Div>
 )
 
+@observer
 export default class Settings extends React.Component {
   render() {
     const {
@@ -161,7 +163,8 @@ export default class Settings extends React.Component {
             max={MAX_POPUP_WIDTH}
             value={listWidth}
             onChange={({ target: { valueAsNumber } }) =>
-              set({ listWidth: valueAsNumber })}
+              set({ listWidth: valueAsNumber })
+            }
           />
           <Value>{`${listWidth}px`}</Value>
         </Setting>
@@ -173,7 +176,8 @@ export default class Settings extends React.Component {
             max={45}
             value={listItemHeight}
             onChange={({ target: { valueAsNumber } }) =>
-              set({ listItemHeight: valueAsNumber })}
+              set({ listItemHeight: valueAsNumber })
+            }
           />
           <Value>{`${listItemHeight}px`}</Value>
         </Setting>
@@ -189,7 +193,8 @@ export default class Settings extends React.Component {
             step={1}
             value={maxVisibleResults}
             onChange={({ target: { valueAsNumber } }) =>
-              set({ maxVisibleResults: valueAsNumber })}
+              set({ maxVisibleResults: valueAsNumber })
+            }
           />
           <Value>{maxVisibleResults}</Value>
         </Setting>
