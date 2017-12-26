@@ -137,7 +137,7 @@ const actions = [
     execute: tabs => tabs.forEach(({ id }) => updateTab(id, { muted: false })),
   },
   {
-    name: 'Distribute tabs horizontally',
+    name: 'Split tabs horizontally',
     details: 'Moves each tab in its own window, distributed horizontally',
     icon: defaultActionIcon,
     directTypes: [TYPES.TAB],
