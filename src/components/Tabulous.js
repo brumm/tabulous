@@ -35,7 +35,7 @@ export default class Tabulous extends React.Component {
 
   markTab = (...tabIds) =>
     this.setState(({ markedTabIds }) => ({
-      markedTabIds: [...markedTabIds, ...tabIds],
+      markedTabIds: [...markedTabIds, ...tabIds.filter(Boolean)],
     }))
 
   unmarkTab = (...tabIds) =>
@@ -168,7 +168,9 @@ export default class Tabulous extends React.Component {
               bind={transformShortcut(markAllTabsShortcut)}
               onCombo={({ event }) => {
                 event.preventDefault()
-                const allTabIds = activeSource.items.map(({ id }) => id)
+                const allTabIds = activeSource.items
+                  .map(({ id }) => id)
+                  .filter(Boolean)
                 if (allTabIds.length === markedTabIds.length) {
                   this.setState({
                     markedTabIds: [],
