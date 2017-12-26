@@ -103,18 +103,22 @@ const actions = [
     name: 'Open All Bookmarks',
     icon: defaultActionIcon,
     directTypes: [TYPES.FOLDER],
-    execute: ({ id }) =>
-      allBbookmarksResolver(id).then(bookmarks =>
-        bookmarks.forEach(({ meta: { url } }) => createTab({ url }))
+    execute: bookmarks =>
+      bookmarks.forEach(({ id }) =>
+        allBbookmarksResolver(id).then(bookmarks =>
+          bookmarks.forEach(({ meta: { url } }) => createTab({ url }))
+        )
       ),
   },
   {
     name: 'Open All Bookmarks In New Window',
     icon: defaultActionIcon,
     directTypes: [TYPES.FOLDER],
-    execute: ({ id }) =>
-      allBbookmarksResolver(id).then(bookmarks =>
-        createWindow({ url: bookmarks.map(({ meta: { url } }) => url) })
+    execute: bookmarks =>
+      bookmarks.forEach(({ id }) =>
+        allBbookmarksResolver(id).then(bookmarks =>
+          createWindow({ url: bookmarks.map(({ meta: { url } }) => url) })
+        )
       ),
   },
   {
