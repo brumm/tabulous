@@ -49,6 +49,9 @@ class Tab extends TBObject {
   activate() {
     selectTab({ id: this.id, windowId: this.meta.windowId })
   }
+  close() {
+    closeTab(this.id)
+  }
 }
 
 const actions = [
@@ -64,7 +67,7 @@ const actions = [
     details: 'Close one or more tabs',
     icon: defaultActionIcon,
     directTypes: [TYPES.TAB],
-    execute: tabs => closeTab(...tabs.map(({ id }) => id)),
+    execute: tabs => tabs.forEach(tab => tab.close()),
   },
   {
     name: 'Move To Window...',
