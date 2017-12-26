@@ -11,7 +11,7 @@ const recentlyClosedResolver = directObject =>
     items.filter(({ tab }) => tab).map(
       ({ tab }) =>
         new RecentlyClosedTab({
-          id: tab.id,
+          id: tab.sessionId,
           name: tab.title,
           details: tab.url,
           icon: tab.favIconUrl,
@@ -19,7 +19,6 @@ const recentlyClosedResolver = directObject =>
           meta: {
             pinned: tab.pinned,
             windowId: tab.windowId,
-            sessionId: tab.sessionId,
           },
         })
     )
@@ -34,7 +33,7 @@ const source = new TBObject({
 
 class RecentlyClosedTab extends TBObject {
   restore() {
-    restoreRecentlyClosed(this.meta.sessionId)
+    restoreRecentlyClosed(this.id)
   }
 }
 
