@@ -75,6 +75,7 @@ class Sources {
       ]),
       this.indirectObjects.selected
     )
+    this.directObjects.refreshSources()
   }
 }
 

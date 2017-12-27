@@ -75,8 +75,10 @@ export default class TBCatalog {
 
   @action
   setInput(input) {
-    this.index = 0
-    this.searchTerm = []
+    if (!(input && this.input && input.id && this.input.id)) {
+      this.index = 0
+      this.searchTerm = []
+    }
     this.input = input
     this.refreshSources()
   }
@@ -110,6 +112,7 @@ export default class TBCatalog {
   @action
   refreshSources({ input = this.input, forceHideSourceItem } = {}) {
     this.loading = true
+    const previousSelectedId = this.selected.id
     Promise.all(
       this.sources.map(Source => {
         if (!forceHideSourceItem && Source.showSourceItem) {
@@ -127,6 +130,17 @@ export default class TBCatalog {
           .reduce((collection, item) => collection.concat(item), [])
           .map(item => (item instanceof TBObject ? item : new TBObject(item)))
         this.loading = false
+        if (
+          previousSelectedId &&
+          this.selected.id &&
+          previousSelectedId !== this.selected.id
+        ) {
+          let newIndex = this.items.findIndex(
+            ({ id }) => id === previousSelectedId
+          )
+          newIndex = newIndex === -1 ? this.index : newIndex
+          this.setIndex(Math.max(newIndex, 0))
+        }
       })
     )
   }
