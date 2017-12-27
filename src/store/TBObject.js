@@ -10,6 +10,9 @@ export default class TBObject {
   get name() {
     return this.object.name
   }
+  set name(name) {
+    this.object.name = name
+  }
   get details() {
     return this.object.details || this.object.path
   }
@@ -30,6 +33,11 @@ export default class TBObject {
   // direct and indirect concerns
   get childResolver() {
     return this.object.childResolver
+  }
+
+  // indirect concerns
+  get textMode() {
+    return this.object.textMode
   }
 
   // action concerns

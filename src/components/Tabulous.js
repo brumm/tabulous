@@ -31,7 +31,7 @@ export default class Tabulous extends React.Component {
   }
 
   get showThirdPane() {
-    return this.props.sources.indirectObjects.items.length > 0
+    return !!this.props.sources.actionObjects.selected.suggestedObjects
   }
 
   focusInput = () =>
@@ -76,7 +76,13 @@ export default class Tabulous extends React.Component {
     } = this.props
     const { activePaneIndex, markedTabIds } = this.state
     const activeSource = sources.getActiveSource(activePaneIndex)
-    const listHeight = Math.ceil(listItemHeight * maxVisibleResults)
+    const isTextMode = !!activeSource.selected.textMode
+    const listHeight = isTextMode
+      ? 0
+      : Math.min(
+          Math.ceil(listItemHeight * maxVisibleResults),
+          listItemHeight * (activeSource.items.length || 1)
+        )
     const noRowsMessage =
       activeSource.searchTerm.length > 0
         ? `No match for ${activeSource.searchTerm.join('')}`
@@ -86,27 +92,31 @@ export default class Tabulous extends React.Component {
       <Container>
         {advancedMode && (
           <Fragment>
-            <ComboKeys
-              bind={alphabet}
-              onCombo={({ event, combo }) => {
-                event.preventDefault()
-                activeSource.pushSearchCharacter(combo)
-              }}
-            />
+            {!isTextMode && (
+              <Fragment>
+                <ComboKeys
+                  bind={alphabet}
+                  onCombo={({ event, combo }) => {
+                    event.preventDefault()
+                    activeSource.pushSearchCharacter(combo)
+                  }}
+                />
+                <ComboKeys
+                  bind="backspace"
+                  onCombo={({ event }) => {
+                    event.preventDefault()
+                    if (activeSource.searchTerm.length) {
+                      activeSource.clearSearchTerm()
+                    }
+                  }}
+                />
+              </Fragment>
+            )}
             <ComboKeys
               bind={['tab', 'shift+tab']}
               onCombo={({ event }) => {
                 event.preventDefault()
                 this.changeActivePaneIndex(event.shiftKey ? -1 : 1)
-              }}
-            />
-            <ComboKeys
-              bind="backspace"
-              onCombo={({ event }) => {
-                event.preventDefault()
-                if (activeSource.searchTerm.length) {
-                  activeSource.clearSearchTerm()
-                }
               }}
             />
             {activePaneIndex !== 1 && (
@@ -220,6 +230,7 @@ export default class Tabulous extends React.Component {
           )}
         </FancyShadow>
         <ItemList
+          items={activeSource.items.filter(({ textMode }) => !textMode)}
           extraData={{
             filter: activeSource.searchTerm.length,
             markedTabIds: markedTabIds.length,
@@ -228,12 +239,8 @@ export default class Tabulous extends React.Component {
           markedTabIds={activePaneIndex === 0 ? markedTabIds : []}
           loading={activeSource.loading}
           width={listWidth}
-          height={Math.min(
-            listHeight,
-            listItemHeight * (activeSource.items.length || 1)
-          )}
+          height={listHeight}
           itemHeight={listItemHeight}
-          items={activeSource.items}
           selectedIndex={activeSource.index}
           style={{ backgroundColor: '#fafafa', borderRadius: '0 0 2px 2px' }}
         />

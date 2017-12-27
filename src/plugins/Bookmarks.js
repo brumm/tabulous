@@ -14,6 +14,7 @@ const TYPES = {
   FOLDER: 'browser.bookmark-folder',
   BOOKMARK: 'browser.bookmark',
   URL: 'public.url',
+  TEXT_MODE: 'TEXT_MODE',
 }
 
 export const flatten = (
@@ -134,13 +135,21 @@ const actions = [
       ),
   },
   {
-    name: 'Move to bookmarks folder',
+    name: 'Create New Session...',
     details: 'Create bookmarks in folder for this',
     icon: defaultActionIcon,
     directTypes: [TYPES.URL],
-    indirectTypes: [TYPES.FOLDER],
-    execute: tabs =>
-      createBookmark({ title: new Date().toJSON(), index: 0 }).then(({ id }) =>
+    indirectTypes: [TYPES.TEXT_MODE],
+    suggestedObjects: () =>
+      Promise.resolve([
+        new TBObject({
+          textMode: true,
+          name: 'New Session',
+          type: [TYPES.TEXT_MODE],
+        }),
+      ]),
+    execute: (tabs, { name }) =>
+      createBookmark({ title: name, index: 0 }).then(({ id }) =>
         Promise.all(
           tabs.map(({ name, meta: { url } }, index) =>
             createBookmark({ parentId: id, index, url, title: name })

@@ -1,6 +1,7 @@
 import React from 'react'
 import glamorous from 'glamorous'
 
+import Input from 'components/Input'
 import { Item } from 'components/ItemList'
 
 export const PaneContainer = glamorous.div({
@@ -23,14 +24,34 @@ export const PaneWrapper = glamorous.div(({ active, theme }) => ({
   backgroundColor: active ? '#fff' : '#fafafa',
 }))
 
+const AutoSelectInput = props => (
+  <Input innerRef={node => node && node.select()} {...props} />
+)
+
 export const Pane = ({ active, item }) => (
   <PaneWrapper active={active}>
-    <Item
-      hideDetails={!active}
-      hideChevron={!active}
-      icon={item.icon}
-      name={item.name}
-      audible={item.meta.audible && !item.meta.muted}
-    />
+    {item.textMode ? (
+      <Item
+        hideDetails
+        hideChevron
+        icon={item.icon}
+        name={
+          <AutoSelectInput
+            autoFocus
+            onChange={({ target: { value } }) => (item.name = value)}
+            defaultValue={item.name}
+            type="text"
+          />
+        }
+      />
+    ) : (
+      <Item
+        hideDetails={!active}
+        hideChevron={!active}
+        icon={item.icon}
+        name={item.name}
+        audible={item.meta.audible && !item.meta.muted}
+      />
+    )}
   </PaneWrapper>
 )
