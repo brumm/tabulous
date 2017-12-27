@@ -13,6 +13,12 @@ const Container = glamorous.div(({ theme }) => ({
   width: theme.listWidth,
 }))
 
+// generate ['a', ..., 'z']
+// to use in keybinding later
+const alphabet = Array.from({ length: 26 }, (_, i) =>
+  String.fromCharCode(97 + i)
+)
+
 @observer
 export default class Tabulous extends React.Component {
   static defaultProps = {
@@ -81,10 +87,7 @@ export default class Tabulous extends React.Component {
         {advancedMode && (
           <Fragment>
             <ComboKeys
-              // generate ['a', ..., 'z']
-              bind={Array.from({ length: 26 }, (_, i) =>
-                String.fromCharCode(97 + i)
-              )}
+              bind={alphabet}
               onCombo={({ event, combo }) => {
                 event.preventDefault()
                 activeSource.pushSearchCharacter(combo)
