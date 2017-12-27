@@ -1,6 +1,8 @@
 import React from 'react'
 import glamorous from 'glamorous'
 
+import { initialState } from 'store/Settings'
+
 if (process.env.NODE_ENV === 'production') {
   Raven.config('https://ddb60bba86fe4ac382b0139e699e45eb@sentry.io/254233', {
     release: process.env.VERSION,
@@ -8,8 +10,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const Container = glamorous.div({
-  height: 45,
+  height: initialState.listItemHeight * 1.5,
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
 })
@@ -29,7 +32,9 @@ export default class ErrorBoundary extends React.Component {
     if (this.state.error) {
       return (
         <Container>
-          <p>We're sorry - something's gone wrong.</p>
+          <p>Something's gone wrong 💩</p>
+          <p>We were notified of the error,</p>
+          <p>please try again.</p>
         </Container>
       )
     } else {
