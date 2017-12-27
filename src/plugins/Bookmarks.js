@@ -7,9 +7,9 @@ import {
   createBookmark,
 } from 'browser-api'
 import defaultActionIcon from 'img/icon-action'
-import { hasIntersections } from 'utils'
 
 const TYPES = {
+  SOURCE: 'tabulous.source',
   MANAGER: 'browser.bookmark-manager',
   FOLDER: 'browser.bookmark-folder',
   BOOKMARK: 'browser.bookmark',
@@ -65,7 +65,7 @@ const bookmarkResolver = id =>
 const source = new TBObject({
   showSourceItem: true,
   name: 'Bookmarks',
-  type: [TYPES.MANAGER],
+  type: [TYPES.SOURCE, TYPES.MANAGER],
   childResolver: bookmarkResolver,
 })
 

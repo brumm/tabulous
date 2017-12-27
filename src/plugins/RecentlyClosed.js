@@ -1,8 +1,14 @@
 import TBObject from 'store/TBObject'
-import { getRecentlyClosed, restoreRecentlyClosed } from 'browser-api'
+import {
+  getRecentlyClosed,
+  restoreRecentlyClosed,
+  createTab,
+} from 'browser-api'
 import defaultActionIcon from 'img/icon-action'
 
 const TYPES = {
+  SOURCE: 'tabulous.source',
+  HISTORY: 'browser.history',
   RECENTLY_CLOSED: 'browser.recently-closed',
 }
 
@@ -27,7 +33,7 @@ const recentlyClosedResolver = directObject =>
 const source = new TBObject({
   showSourceItem: true,
   name: 'Recently Closed',
-  type: ['tabulous.source'],
+  type: [TYPES.SOURCE, TYPES.HISTORY],
   childResolver: recentlyClosedResolver,
 })
 
@@ -38,6 +44,13 @@ class RecentlyClosedTab extends TBObject {
 }
 
 const actions = [
+  {
+    name: 'Open History',
+    details: 'Open history in new tab',
+    icon: defaultActionIcon,
+    directTypes: [TYPES.HISTORY],
+    execute: () => createTab({ url: 'chrome://history/' }),
+  },
   {
     name: 'Restore',
     details: 'Restore recently closed tab',
