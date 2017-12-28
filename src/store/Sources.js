@@ -20,7 +20,7 @@ class Sources {
   constructor(plugins) {
     const { sources, actions } = plugins.reduce(
       ({ sources, actions }, plugin) => ({
-        sources: [...sources, plugin.source],
+        sources: plugin.source ? [...sources, plugin.source] : sources,
         actions: [...actions, ...plugin.actions],
       }),
       { sources: [], actions: [] }
