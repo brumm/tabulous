@@ -67,11 +67,11 @@ class Sources {
     return this[['directObjects', 'actionObjects', 'indirectObjects'][index]]
   }
 
-  execute(markedTabIds) {
+  execute(markedItemIds) {
     this.actionObjects.selected.execute(
       uniqIds([
         this.directObjects.selected,
-        ...this.directObjects.findById(...markedTabIds),
+        ...this.directObjects.findById(...markedItemIds),
       ]),
       this.indirectObjects.selected
     )

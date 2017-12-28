@@ -62,7 +62,7 @@ const Funkey = ({ def }) => (
 )
 
 export default ({
-  settings: { markAllTabsShortcut, markTabShortcut, closeTabShortcut },
+  settings: { markAllTabsShortcut, markItemShortcut, closeTabShortcut },
 }) => (
   <Container>
     <H1>Hey! 🎉</H1>
@@ -83,7 +83,7 @@ export default ({
       Now activate a tab with <Funkey def="Enter" />
       <br />
       <br />
-      Mark some other selected tab with <Funkey def={markTabShortcut} />
+      Mark some other selected tab with <Funkey def={markItemShortcut} />
       <br />
       <br />
       Try closing the selected (and all other marked tabs) with{' '}

@@ -11,7 +11,7 @@ export const initialState = {
   highlightColor: '#519AF5',
   markedColor: '#B8D7FB',
   markAllTabsShortcut: 'Ctrl + A',
-  markTabShortcut: 'Ctrl + S',
+  markItemShortcut: 'Ctrl + S',
   closeTabShortcut: 'Ctrl + D',
 }
 
@@ -23,7 +23,7 @@ class Settings {
   @observable highlightColor = initialState.highlightColor
   @observable markedColor = initialState.markedColor
   @observable markAllTabsShortcut = initialState.markAllTabsShortcut
-  @observable markTabShortcut = initialState.markTabShortcut
+  @observable markItemShortcut = initialState.markItemShortcut
   @observable closeTabShortcut = initialState.closeTabShortcut
 
   constructor() {

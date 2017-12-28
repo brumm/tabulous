@@ -21,7 +21,7 @@ export const selectTab = ({ id, windowId }) =>
     tabs.update(id, { active: true }),
   ])
 
-export const closeTab = (...tabIds) => tabs.remove(tabIds)
+export const closeTab = (...itemIds) => tabs.remove(itemIds)
 
 export const createTab = properties => tabs.create(properties)
 

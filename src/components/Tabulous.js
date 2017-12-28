@@ -27,7 +27,7 @@ export default class Tabulous extends React.Component {
 
   state = {
     activePaneIndex: 0,
-    markedTabIds: [],
+    markedItemIds: [],
   }
 
   get showThirdPane() {
@@ -39,14 +39,16 @@ export default class Tabulous extends React.Component {
   componentWillUpdate = () => this.focusInput()
   componentDidMount = () => this.focusInput()
 
-  markTab = (...tabIds) =>
-    this.setState(({ markedTabIds }) => ({
-      markedTabIds: [...markedTabIds, ...tabIds.filter(Boolean)],
+  markItem = (...itemIds) =>
+    this.setState(({ markedItemIds }) => ({
+      markedItemIds: [...markedItemIds, ...itemIds.filter(Boolean)],
     }))
 
-  unmarkTab = (...tabIds) =>
-    this.setState(({ markedTabIds }) => ({
-      markedTabIds: markedTabIds.filter(markedId => !tabIds.includes(markedId)),
+  unmarkItem = (...itemIds) =>
+    this.setState(({ markedItemIds }) => ({
+      markedItemIds: markedItemIds.filter(
+        markedId => !itemIds.includes(markedId)
+      ),
     }))
 
   changeActivePaneIndex(direction) {
@@ -68,13 +70,13 @@ export default class Tabulous extends React.Component {
         listItemHeight,
         maxVisibleResults,
         listWidth,
-        markTabShortcut,
+        markItemShortcut,
         markAllTabsShortcut,
         closeTabShortcut,
         advancedMode,
       },
     } = this.props
-    const { activePaneIndex, markedTabIds } = this.state
+    const { activePaneIndex, markedItemIds } = this.state
     const activeSource = sources.getActiveSource(activePaneIndex)
     const isTextMode = !!activeSource.selected.textMode
     const listHeight = isTextMode
@@ -145,7 +147,7 @@ export default class Tabulous extends React.Component {
           bind={'enter'}
           onCombo={({ event }) => {
             event.preventDefault()
-            sources.execute(markedTabIds)
+            sources.execute(markedItemIds)
           }}
         />
         <ComboKeys
@@ -161,20 +163,20 @@ export default class Tabulous extends React.Component {
               bind={transformShortcut(closeTabShortcut)}
               onCombo={({ event }) => {
                 event.preventDefault()
-                const tabIds = uniqIds([
+                const itemIds = uniqIds([
                   activeSource.selected.id,
-                  ...markedTabIds,
+                  ...markedItemIds,
                 ])
-                closeTab(...tabIds)
+                closeTab(...itemIds)
               }}
             />
             <ComboKeys
-              bind={transformShortcut(markTabShortcut)}
+              bind={transformShortcut(markItemShortcut)}
               onCombo={({ event }) => {
                 event.preventDefault()
-                markedTabIds.includes(activeSource.selected.id)
-                  ? this.unmarkTab(activeSource.selected.id)
-                  : this.markTab(activeSource.selected.id)
+                markedItemIds.includes(activeSource.selected.id)
+                  ? this.unmarkItem(activeSource.selected.id)
+                  : this.markItem(activeSource.selected.id)
               }}
             />
             <ComboKeys
@@ -184,13 +186,13 @@ export default class Tabulous extends React.Component {
                 const allTabIds = activeSource.items
                   .filter(({ type }) => !type.includes('tabulous.source'))
                   .map(({ id }) => id)
-                if (allTabIds.length === markedTabIds.length) {
+                if (allTabIds.length === markedItemIds.length) {
                   this.setState({
-                    markedTabIds: [],
+                    markedItemIds: [],
                   })
                 } else {
                   this.setState({
-                    markedTabIds: allTabIds,
+                    markedItemIds: allTabIds,
                   })
                 }
               }}
@@ -233,10 +235,10 @@ export default class Tabulous extends React.Component {
           items={activeSource.items.filter(({ textMode }) => !textMode)}
           extraData={{
             filter: activeSource.searchTerm.length,
-            markedTabIds: markedTabIds.length,
+            markedItemIds: markedItemIds.length,
           }}
           noRowsMessage={noRowsMessage}
-          markedTabIds={activePaneIndex === 0 ? markedTabIds : []}
+          markedItemIds={activePaneIndex === 0 ? markedItemIds : []}
           loading={activeSource.loading}
           width={listWidth}
           height={listHeight}

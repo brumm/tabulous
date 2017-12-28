@@ -89,7 +89,7 @@ export default class Settings extends React.Component {
         highlightColor,
         markedColor,
         markAllTabsShortcut,
-        markTabShortcut,
+        markItemShortcut,
         closeTabShortcut,
         set,
       },
@@ -112,8 +112,8 @@ export default class Settings extends React.Component {
           <ShortcutChooser
             validate={validate}
             component={ShortcutInput}
-            defaultValue={markTabShortcut}
-            onUpdate={markTabShortcut => set({ markTabShortcut })}
+            defaultValue={markItemShortcut}
+            onUpdate={markItemShortcut => set({ markItemShortcut })}
           />
           <Value />
         </Setting>

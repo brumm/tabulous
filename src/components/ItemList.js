@@ -158,7 +158,7 @@ export default class ItemList extends React.Component {
   rowRenderer = ({ key, index, style }) => {
     const item = this.props.items[index]
     const isSelected = index === this.props.selectedIndex
-    const isMarked = this.props.markedTabIds.includes(item.id)
+    const isMarked = this.props.markedItemIds.includes(item.id)
 
     return (
       <Item
