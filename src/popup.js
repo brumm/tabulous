@@ -27,7 +27,7 @@ Promise.all([
   getCurrentTab(),
   storageGet(),
   // the chrome extension window collapses to a tiny size
-  // if we render immediately, so we'll delay by 10ms :/
+  // if we render immediately, so we'll delay by a bit :/
   delay(70),
 ]).then(([{ index }, settings]) => {
   settings = Object.assign(initialState, settings)
