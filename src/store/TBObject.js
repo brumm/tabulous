@@ -2,7 +2,12 @@ import emptyIcon from 'img/icon-48.png'
 
 export default class TBObject {
   constructor(object = {}) {
-    this.object = object
+    this.object = {
+      id: Math.random()
+        .toString(36)
+        .substr(2),
+      ...object,
+    }
   }
   get id() {
     return this.object.id

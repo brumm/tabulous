@@ -75,6 +75,8 @@ export default class TBCatalog {
 
   @action
   setInput(input) {
+    // only reset index and search term if the new input
+    // does not match the current one (completely new input)
     if (!(input && this.input && input.id && this.input.id)) {
       this.index = 0
       this.searchTerm = []
@@ -131,15 +133,16 @@ export default class TBCatalog {
           .map(item => (item instanceof TBObject ? item : new TBObject(item)))
         this.loading = false
         if (
-          previousSelectedId &&
-          this.selected.id &&
+          (previousSelectedId || this.selected.id) &&
           previousSelectedId !== this.selected.id
         ) {
+          // attempt to track item moves by finding the previous id in the result set
           let newIndex = this.items.findIndex(
             ({ id }) => id === previousSelectedId
           )
           newIndex = newIndex === -1 ? this.index : newIndex
-          this.setIndex(Math.max(newIndex, 0))
+          newIndex = Math.min(Math.max(newIndex, 0), this.items.length - 1)
+          this.index = newIndex
         }
       })
     )

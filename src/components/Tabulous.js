@@ -182,8 +182,8 @@ export default class Tabulous extends React.Component {
               onCombo={({ event }) => {
                 event.preventDefault()
                 const allTabIds = activeSource.items
+                  .filter(({ type }) => !type.includes('tabulous.source'))
                   .map(({ id }) => id)
-                  .filter(Boolean)
                 if (allTabIds.length === markedTabIds.length) {
                   this.setState({
                     markedTabIds: [],
