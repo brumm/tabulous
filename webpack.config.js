@@ -98,12 +98,14 @@ var options = {
       },
     ]),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'popup.html'),
+      template: path.join(__dirname, 'src', 'template.html.ejs'),
+      env: env.NODE_ENV,
       filename: 'popup.html',
       chunks: ['popup'],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'options.html'),
+      template: path.join(__dirname, 'src', 'template.html.ejs'),
+      env: env.NODE_ENV,
       filename: 'options.html',
       chunks: ['options'],
     }),
