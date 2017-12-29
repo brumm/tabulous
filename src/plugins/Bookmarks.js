@@ -18,7 +18,7 @@ const TYPES = {
   TEXT_MODE: 'TEXT_MODE',
 }
 
-export const flatten = (
+const flatten = (
   children,
   extractChildren = x => x.children,
   level = 1,

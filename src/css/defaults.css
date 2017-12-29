@@ -35,7 +35,6 @@ a {
 
 textarea,
 input {
-  cursor: text;
   font: inherit;
   color: inherit;
 }
@@ -57,6 +56,24 @@ input[type='color']::-webkit-color-swatch {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+input[type='range'] {
+  background-color: #ebf1f9;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
+  border: none;
+  border-radius: 100px;
+  padding: 2px;
+  -webkit-appearance: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  background-image: linear-gradient(white, #ededed);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
+  border-radius: 100px;
+  height: 15px;
+  width: 15px;
+  -webkit-appearance: none;
+}
+
 textarea {
   width: 100%;
 }
@@ -66,3 +83,4 @@ img {
   max-width: 100%;
   height: auto;
 }
+

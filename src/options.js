@@ -4,16 +4,15 @@ import 'css/defaults.css'
 import React from 'react'
 import { render } from 'react-dom'
 import { ThemeProvider } from 'glamorous'
-import { HashRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 
-import Options from 'components/Options'
+import Options, { AVAILABLE_TABS } from 'components/Options'
 import ErrorBoundary from 'components/ErrorBoundary'
 import settings from 'store/Settings'
 import Sources from 'store/Sources'
 
 import Tutorial from './components/Options/TutorialPlugin'
-
 const sources = (window.sources = new Sources([Tutorial]))
 
 render(
@@ -21,15 +20,20 @@ render(
     <Provider settings={settings}>
       <ErrorBoundary settings={settings}>
         <ThemeProvider theme={settings}>
-          <Route
-            render={({ location }) => (
-              <Options
-                settings={settings}
-                sources={sources}
-                location={location}
-              />
-            )}
-          />
+          <Switch>
+            <Route
+              path={`/:activeTab(${AVAILABLE_TABS.join('|')})`}
+              children={({ location, match }) => (
+                <Options
+                  activeTab={match.params.activeTab}
+                  settings={settings}
+                  sources={sources}
+                  location={location}
+                />
+              )}
+            />
+            <Redirect from="/" to="/shortcuts" />
+          </Switch>
         </ThemeProvider>
       </ErrorBoundary>
     </Provider>

@@ -1,4 +1,4 @@
-var webpack = require('webpack'),
+const webpack = require('webpack'),
   path = require('path'),
   fileSystem = require('fs'),
   env = require('./utils/env'),
@@ -8,11 +8,16 @@ var webpack = require('webpack'),
   WriteFilePlugin = require('write-file-webpack-plugin')
 
 // load the secrets
-var alias = {}
+const alias = {}
 
-var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js')
+const secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js')
 
-var fileExtensions = [
+const AVAILABLE_PLUGINS = fileSystem
+  .readdirSync(path.join(__dirname, 'src', 'plugins'))
+  .filter(fileName => fileName.endsWith('.js'))
+  .map(fileName => fileName.replace('.js', ''))
+
+const fileExtensions = [
   'jpg',
   'jpeg',
   'png',
@@ -29,7 +34,7 @@ if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath
 }
 
-var options = {
+const options = {
   devtool: env.NODE_ENV === 'development' && 'cheap-module-eval-source-map',
   entry: {
     popup: path.join(__dirname, 'src', 'popup.js'),
@@ -75,6 +80,7 @@ var options = {
     new CleanWebpackPlugin(['build']),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.DefinePlugin({
+      'process.env.AVAILABLE_PLUGINS': JSON.stringify(AVAILABLE_PLUGINS),
       'process.env.NODE_ENV': JSON.stringify(env.NODE_ENV),
       'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
     }),
@@ -91,7 +97,7 @@ var options = {
               content_security_policy:
                 env.NODE_ENV === 'development'
                   ? "script-src 'self' 'unsafe-eval' https://cdn.ravenjs.com; object-src 'self'"
-                  : "script-src 'self' https://cdn.ravenjs.com https://ssl.google-analytics.com; object-src 'self'",
+                  : "script-src 'self' https://cdn.ravenjs.com; object-src 'self'",
             })
           )
         },

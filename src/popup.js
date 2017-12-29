@@ -31,9 +31,9 @@ Promise.all([
   delay(70),
 ]).then(([{ index }, settings]) => {
   settings = Object.assign(initialState, settings)
-  const sources = new Sources(
+  const sources = (window.sources = new Sources(
     settings.advancedMode ? [Tabs, Bookmarks, RecentlyClosed] : [Tabs]
-  )
+  ))
   sources.directObjects.setIndex(index)
   render(
     <Provider settings={settings}>
