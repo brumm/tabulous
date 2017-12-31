@@ -10,6 +10,7 @@ import {
   updateTab,
 } from 'browser-api'
 import defaultActionIcon from 'img/icon-action'
+import windowIcon from './icon-window'
 import { uniqIds } from 'utils'
 
 const TYPES = {
@@ -81,11 +82,13 @@ const actions = [
           id,
           name: _window.name ? _window.name : `Window ${index + 1}`,
           details: `${_window.tabs.length} tabs`,
+          icon: windowIcon,
           type: [TYPES.WINDOW],
           meta: _window,
         })),
         {
           name: `New Window`,
+          icon: windowIcon,
           type: [TYPES.WINDOW],
         },
       ]),

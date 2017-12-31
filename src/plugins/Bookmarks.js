@@ -7,6 +7,7 @@ import {
   createBookmark,
 } from 'browser-api'
 import defaultActionIcon from 'img/icon-action'
+import bookmarkIcon from './icon-bookmark'
 
 const TYPES = {
   SOURCE: 'tabulous.source',
@@ -41,6 +42,7 @@ const allBbookmarksResolver = id =>
             name: title,
             details:
               meta.url || (children.length && `${children.length} bookmarks`),
+            icon: bookmarkIcon,
             type: meta.url ? [TYPES.BOOKMARK] : [TYPES.FOLDER],
             meta,
           })
@@ -55,6 +57,7 @@ const bookmarkResolver = id =>
           name: title,
           details:
             meta.url || (children.length && `${children.length} bookmarks`),
+          icon: bookmarkIcon,
           childResolver: children.length > 0 && (() => bookmarkResolver(id)),
           type: meta.url ? [TYPES.BOOKMARK] : [TYPES.FOLDER],
           meta,
@@ -65,6 +68,7 @@ const bookmarkResolver = id =>
 const source = new TBObject({
   showSourceItem: true,
   name: 'Bookmarks',
+  icon: bookmarkIcon,
   type: [TYPES.SOURCE, TYPES.MANAGER],
   childResolver: bookmarkResolver,
 })
