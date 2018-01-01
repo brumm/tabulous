@@ -32,7 +32,6 @@ export const Pane = ({ active, item }) => (
   <PaneWrapper active={active}>
     {item.textMode ? (
       <Item
-        hideDetails
         hideChevron
         icon={item.icon}
         name={
@@ -46,7 +45,6 @@ export const Pane = ({ active, item }) => (
       />
     ) : (
       <Item
-        hideDetails={!active}
         hideChevron={!active}
         icon={item.icon}
         name={item.name}

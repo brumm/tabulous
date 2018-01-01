@@ -26,7 +26,6 @@ export const Item = inject('settings')(
       audible,
       settings,
       hideChevron,
-      hideDetails,
       hasChildren,
     }) => (
       <Div
