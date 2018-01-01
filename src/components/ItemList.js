@@ -36,6 +36,8 @@ export const Item = inject('settings')(
         paddingLeft={10}
         paddingRight={10}
         backgroundColor={selected && settings.highlightColor}
+        textShadow={selected && '0px 0px 0px white'}
+        WebkitFontSmoothing={selected && 'antialiased'}
         boxShadow={marked && `5px 0 0 ${settings.markedColor} inset`}
         style={style}
       >
