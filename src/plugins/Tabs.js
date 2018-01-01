@@ -10,6 +10,7 @@ import {
   updateTab,
 } from 'browser-api'
 import defaultActionIcon from 'img/icon-action'
+import tabIcon from './icon-tab'
 import windowIcon from './icon-window'
 import { uniqIds } from 'utils'
 
@@ -27,7 +28,7 @@ const tabResolver = directObject =>
           id: tab.id,
           name: tab.title,
           details: tab.url,
-          icon: tab.favIconUrl,
+          icon: tab.favIconUrl || tabIcon,
           type: [TYPES.TAB, TYPES.URL],
           meta: {
             pinned: tab.pinned,
@@ -43,6 +44,7 @@ const tabResolver = directObject =>
 const source = new TBObject({
   name: 'Tabs',
   type: ['tabulous.source'],
+  icon: tabIcon,
   childResolver: tabResolver,
 })
 
