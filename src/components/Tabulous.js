@@ -174,9 +174,11 @@ export default class Tabulous extends React.Component {
               bind={transformShortcut(markItemShortcut)}
               onCombo={({ event }) => {
                 event.preventDefault()
-                markedItemIds.includes(activeSource.selected.id)
-                  ? this.unmarkItem(activeSource.selected.id)
-                  : this.markItem(activeSource.selected.id)
+                if (!activeSource.selected.type.includes('tabulous.source')) {
+                  markedItemIds.includes(activeSource.selected.id)
+                    ? this.unmarkItem(activeSource.selected.id)
+                    : this.markItem(activeSource.selected.id)
+                }
               }}
             />
             <ComboKeys
