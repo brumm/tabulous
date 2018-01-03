@@ -2,7 +2,6 @@
   "name": "Tabulous",
   "options_page": "options.html",
   "permissions": ["tabs", "activeTab", "storage"],
-  "update_url": "http://www.google.com/",
   "browser_action": {
     "default_title": "Tabulous",
     "default_popup": "popup.html",
