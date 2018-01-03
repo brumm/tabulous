@@ -146,7 +146,7 @@ const actions = [
   },
   {
     name: 'Split tabs horizontally',
-    details: 'Moves each tab in its own window, distributed horizontally',
+    details: 'Moves each tab into its own window, tiled horizontally',
     icon: defaultActionIcon,
     directTypes: [TYPES.TAB],
     execute: tabs =>
