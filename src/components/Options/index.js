@@ -26,7 +26,8 @@ import {
   Tabbar,
 } from './Layout'
 
-export const AVAILABLE_TABS = ['intro', 'shortcuts', 'appearance', 'advanced']
+// export const AVAILABLE_TABS = ['intro', 'shortcuts', 'appearance', 'advanced']
+export const AVAILABLE_TABS = ['intro', 'shortcuts', 'appearance']
 
 @observer
 export default class Options extends React.Component {
