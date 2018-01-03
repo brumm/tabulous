@@ -78,6 +78,7 @@ export default class Options extends React.Component {
         <Panel
           style={{
             maxWidth: '33.333vw',
+            minWidth: 400,
             backgroundColor: '#fafafa',
             fontFamily: 'Roboto, sans-serif',
             fontSize: 14,
