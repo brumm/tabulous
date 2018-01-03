@@ -10,8 +10,7 @@ export const onMoved = fn => chrome.tabs.onMoved.addListener(fn)
 
 export const storageGet = (key = null) => storage.sync.get(key)
 
-export const storageSet = items =>
-  storage.sync.set(items).then(console.log, console.error)
+export const storageSet = items => storage.sync.set(items)
 
 export const onStorageChanged = fn => chrome.storage.onChanged.addListener(fn)
 

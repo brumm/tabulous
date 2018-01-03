@@ -1,7 +1,7 @@
 import React from 'react'
 import { observable, action } from 'mobx'
 
-import { onStorageChanged, storageGet } from 'browser-api'
+import { onStorageChanged, storageGet, storageSet } from 'browser-api'
 
 export const initialState = {
   advancedMode: false,
@@ -26,28 +26,62 @@ class Settings {
   @observable markItemShortcut = initialState.markItemShortcut
   @observable closeTabShortcut = initialState.closeTabShortcut
 
+  @observable needsSave = false
+
   constructor() {
-    storageGet().then(this.set)
-    onStorageChanged((changes, area) => {
-      if (area === 'sync') {
-        this.set(
-          Object.keys(changes).reduce(
-            (collection, key) => ({
-              ...collection,
-              [key]: changes[key].newValue,
-            }),
-            {}
-          )
-        )
-      }
+    storageGet().then(settings => {
+      this.set(settings, false)
     })
+    onStorageChanged(
+      action((changes, area) => {
+        if (area === 'sync') {
+          this.set(
+            Object.keys(changes).reduce(
+              (collection, key) => ({
+                ...collection,
+                [key]: changes[key].newValue,
+              }),
+              {}
+            ),
+            false
+          )
+        }
+      })
+    )
   }
 
   @action
-  set = settings => {
+  persist = (
+    settings = {
+      advancedMode: this.advancedMode,
+      listWidth: this.listWidth,
+      listItemHeight: this.listItemHeight,
+      maxVisibleResults: this.maxVisibleResults,
+      highlightColor: this.highlightColor,
+      markedColor: this.markedColor,
+      markAllTabsShortcut: this.markAllTabsShortcut,
+      markItemShortcut: this.markItemShortcut,
+      closeTabShortcut: this.closeTabShortcut,
+    }
+  ) => {
+    storageSet(settings).then(
+      action(() => {
+        this.needsSave = false
+      }),
+      () => {
+        debugger
+      }
+    )
+  }
+
+  @action
+  set = (settings, trackSavedState = true) => {
     Object.keys(settings).forEach(key => {
       this[key] = settings[key]
     })
+    if (trackSavedState) {
+      this.needsSave = true
+    }
   }
 }
 

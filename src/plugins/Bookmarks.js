@@ -166,4 +166,5 @@ const actions = [
 export default {
   source,
   actions,
+  permissions: ['bookmarks'],
 }

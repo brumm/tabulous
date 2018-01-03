@@ -6,7 +6,6 @@ import SwipeableViews from 'react-swipeable-views'
 import { transparentize } from 'polished'
 
 import { initialState } from 'store/Settings'
-import { storageSet } from 'browser-api'
 import Tabulous from 'components/Tabulous'
 import HeyThere from './HeyThere'
 import Shortcuts from './Shortcuts'
@@ -26,8 +25,7 @@ import {
   Tabbar,
 } from './Layout'
 
-// export const AVAILABLE_TABS = ['intro', 'shortcuts', 'appearance', 'advanced']
-export const AVAILABLE_TABS = ['intro', 'shortcuts', 'appearance']
+export const AVAILABLE_TABS = ['intro', 'shortcuts', 'appearance', 'advanced']
 
 @observer
 export default class Options extends React.Component {
@@ -41,6 +39,9 @@ export default class Options extends React.Component {
         highlightColor,
         markedColor,
         advancedMode,
+        set,
+        persist,
+        needsSave,
       },
     } = this.props
     const listHeight = Math.ceil(listItemHeight * maxVisibleResults)
@@ -106,13 +107,12 @@ export default class Options extends React.Component {
             <div style={{ display: 'flex', flexShrink: 0, padding: 10 }}>
               <Button
                 onClick={() => {
-                  storageSet(initialState)
-                  set(initialState)
+                  persist(initialState)
                 }}
               >
                 Reset to defaults
               </Button>
-              <Button primary onClick={() => storageSet(this.props.settings)}>
+              <Button primary inactive={!needsSave} onClick={() => persist()}>
                 Save
               </Button>
             </div>

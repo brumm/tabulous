@@ -165,4 +165,5 @@ const actions = [
 export default {
   source,
   actions,
+  permissions: ['tabs', 'activeTab'],
 }

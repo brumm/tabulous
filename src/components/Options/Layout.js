@@ -112,10 +112,12 @@ export const Value = glamorous.div({
   textAlign: 'right',
 })
 
-export const Button = glamorous.button(({ theme, primary }) => ({
+export const Button = glamorous.button(({ theme, primary, inactive }) => ({
   font: 'inherit',
   backgroundColor: primary
-    ? theme.highlightColor
+    ? inactive
+      ? transparentize(0.3, theme.highlightColor)
+      : theme.highlightColor
     : transparentize(0.9, theme.highlightColor),
   margin: 10,
   border: 'none',

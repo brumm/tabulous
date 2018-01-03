@@ -15,8 +15,8 @@ const promisedPlugins = Promise.all(
     `plugins/${plugin}`)
   )
 ).then(plugins =>
-  plugins.map(({ default: { source } }, index) => ({
-    source,
+  plugins.map(({ default: plugin }, index) => ({
+    ...plugin,
     name: process.env.AVAILABLE_PLUGINS[index],
   }))
 )
@@ -73,10 +73,10 @@ export default () => (
       most-recently closed tabs, and one Restore action.
       <br />
       <br />
-      You'll notice that enabling advanced mode will replace the search text
-      input at the top with a different element, which I'll call Panes. Don't
-      worry, you can still type to search. <Funkey def="Backspace" /> will clear
-      the entire search.
+      Notice that enabling advanced mode will replace the search text input at
+      the top with a different element, which I'll call Panes. Don't worry, you
+      can still type to search. <Funkey def="Backspace" /> will clear the entire
+      search.
       <br />
       <br />
       Panes represent an <Highlight index={0}>Item</Highlight>,{' '}
@@ -99,51 +99,78 @@ export default () => (
       You can cycle through the active Pane with <Funkey def="Tab" />.
     </Paragraph>
 
-    <SettingsProvider>
-      {({ advancedMode, set }) => (
-        <Fragment>
-          <Label>
-            <SettingsInput
-              type="checkbox"
-              checked={advancedMode}
-              onChange={() => set({ advancedMode: !advancedMode })}
-            />
-            Enable advanced mode
-          </Label>
+    <Async
+      promise={promisedPlugins}
+      then={plugins => (
+        <SettingsProvider>
+          {({ advancedMode, set }) => (
+            <Fragment>
+              <Label>
+                <SettingsInput
+                  type="checkbox"
+                  checked={advancedMode}
+                  onChange={({ target: { checked } }) => {
+                    const permissions = plugins
+                      .filter(({ name }) => name !== 'Tabs')
+                      .reduce(
+                        (permissions, plugin) =>
+                          plugin.permissions.forEach(permission =>
+                            permissions.add(permission)
+                          ) || permissions,
+                        new Set()
+                      )
 
-          <div
-            style={{
-              borderTop: '0.5px solid #DDDDDD',
-              paddingTop: 10,
-              marginTop: 10,
-              opacity: advancedMode ? 1 : 0.3,
-            }}
-          >
-            <Async
-              promise={promisedPlugins}
-              then={sources =>
-                sources.map(({ source, name }) => (
+                    if (checked) {
+                      chrome.permissions.request(
+                        { permissions: [...permissions] },
+                        didGrantPermission =>
+                          set({ advancedMode: didGrantPermission })
+                      )
+                    } else {
+                      chrome.permissions.remove(
+                        { permissions: [...permissions] },
+                        removed => set({ advancedMode: !removed })
+                      )
+                    }
+                  }}
+                />
+                Enable advanced mode
+              </Label>
+
+              <div
+                style={{
+                  borderTop: '0.5px solid #DDDDDD',
+                  paddingTop: 10,
+                  marginTop: 10,
+                  opacity: advancedMode ? 1 : 0.3,
+                }}
+              >
+                {plugins.map(({ source, actions, name, permissions }) => (
                   <Fragment key={name}>
                     <ItemWrapper key={name}>
                       <Item hideChevron name={source.name} icon={source.icon} />
                     </ItemWrapper>
-                    {/* <PluginSettings>
+                    <PluginSettings>
+                      <Label>Permissions: {permissions.join(', ')}</Label>
                       <Label>
+                        Actions: {actions.map(({ name }) => name).join(', ')}
+                      </Label>
+                      {/* <Label>
                         <SettingsInput
                           readOnly
                           type="checkbox"
                           checked={source.showSourceItem}
                         />
                         Show source item
-                      </Label>
-                    </PluginSettings> */}
+                      </Label> */}
+                    </PluginSettings>
                   </Fragment>
-                ))
-              }
-            />
-          </div>
-        </Fragment>
+                ))}
+              </div>
+            </Fragment>
+          )}
+        </SettingsProvider>
       )}
-    </SettingsProvider>
+    />
   </Container>
 )
