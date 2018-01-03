@@ -19,7 +19,7 @@ export const PaneWrapper = glamorous.div(({ active, theme }) => ({
   zIndex: active ? 2 : 1,
   boxShadow: `
     0 0 0 1px #e0e0e0,
-    0 0 10px #c8c8c8
+    0 0 5px #c8c8c8
   `,
   backgroundColor: active ? '#fff' : '#fafafa',
 }))
