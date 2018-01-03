@@ -73,7 +73,7 @@ export const Item = inject('settings')(
               flexDirection="column"
               justifyContent="center"
               paddingTop={Math.floor(settings.listItemHeight * 0.18)}
-              paddingBottom={Math.floor(settings.listItemHeight * 0.18)}
+              paddingBottom={Math.floor(settings.listItemHeight * 0.18) + 1}
             >
               <Div position="absolute" left={0} right={0}>
                 <Ellipsis color={selected && '#fff'}>{name}</Ellipsis>
