@@ -105,12 +105,14 @@ const options = {
     ]),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'template.html.ejs'),
+      title: 'Tabulous',
       env: env.NODE_ENV,
       filename: 'popup.html',
       chunks: ['popup'],
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'template.html.ejs'),
+      title: 'Tabulous Options',
       env: env.NODE_ENV,
       filename: 'options.html',
       chunks: ['options'],

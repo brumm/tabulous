@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title><%= htmlWebpackPlugin.options.title %></title>
   <% if (htmlWebpackPlugin.options.env === 'production') { %>
     <script src="https://cdn.ravenjs.com/3.20.1/raven.min.js" crossorigin="anonymous"></script>
   <% } %>
