@@ -6,6 +6,7 @@ const placeholderTabs = [
     url: 'https://walker.org',
     title: 'synthesize Rubber',
     mutedInfo: {},
+    pinned: true,
   },
   {
     id: 1,
@@ -14,6 +15,7 @@ const placeholderTabs = [
     url: 'https://easton.net',
     title: 'haptic Marketing Louisiana',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 2,
@@ -22,6 +24,7 @@ const placeholderTabs = [
     url: 'https://carolanne.net',
     title: 'Seamless',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 3,
@@ -30,6 +33,7 @@ const placeholderTabs = [
     url: 'http://nola.biz',
     title: 'Saint Helena Pound reboot Auto Loan Account',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 4,
@@ -39,6 +43,7 @@ const placeholderTabs = [
     title: 'Music Programmable',
     audible: true,
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 5,
@@ -47,6 +52,7 @@ const placeholderTabs = [
     url: 'https://merl.name',
     title: 'facilitate',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 6,
@@ -55,6 +61,7 @@ const placeholderTabs = [
     url: 'https://hank.name',
     title: 'Trinidad and Tobago Dollar Course',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 7,
@@ -63,6 +70,7 @@ const placeholderTabs = [
     url: 'https://zaria.net',
     title: 'Sports index Global',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 8,
@@ -71,6 +79,7 @@ const placeholderTabs = [
     url: 'https://lenora.name',
     title: 'Associate',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 9,
@@ -79,6 +88,7 @@ const placeholderTabs = [
     url: 'https://britney.org',
     title: 'Dynamic experiences Bedfordshire',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 10,
@@ -87,6 +97,7 @@ const placeholderTabs = [
     url: 'http://jedediah.com',
     title: 'Wisconsin lavender',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 11,
@@ -95,6 +106,7 @@ const placeholderTabs = [
     url: 'https://octavia.com',
     title: 'payment',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 12,
@@ -103,6 +115,7 @@ const placeholderTabs = [
     url: 'https://chase.name',
     title: 'RAM Architect Table',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 13,
@@ -111,6 +124,7 @@ const placeholderTabs = [
     url: 'https://hilario.net',
     title: 'bluetooth',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 14,
@@ -119,6 +133,7 @@ const placeholderTabs = [
     url: 'https://marcelino.biz',
     title: 'systematic',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 15,
@@ -127,6 +142,7 @@ const placeholderTabs = [
     url: 'http://jaylon.name',
     title: 'National whiteboard Florida',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 16,
@@ -135,6 +151,7 @@ const placeholderTabs = [
     url: 'http://kellie.name',
     title: 'Kids Berkshire',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 17,
@@ -143,6 +160,7 @@ const placeholderTabs = [
     url: 'http://elyssa.info',
     title: 'French Guiana',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 18,
@@ -151,6 +169,7 @@ const placeholderTabs = [
     url: 'http://maribel.com',
     title: 'capability',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 19,
@@ -159,6 +178,7 @@ const placeholderTabs = [
     url: 'http://ena.net',
     title: 'Auto Loan Account Walks Practical Metal Computer',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 20,
@@ -167,6 +187,7 @@ const placeholderTabs = [
     url: 'http://johnathon.biz',
     title: 'Manager mint green Outdoors',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 21,
@@ -175,6 +196,7 @@ const placeholderTabs = [
     url: 'https://johnathon.biz',
     title: 'black Lane Operative',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 22,
@@ -183,6 +205,7 @@ const placeholderTabs = [
     url: 'http://cicero.name',
     title: 'Borders content musical',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 23,
@@ -191,6 +214,7 @@ const placeholderTabs = [
     url: 'http://mallie.net',
     title: 'withdrawal',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 24,
@@ -199,6 +223,7 @@ const placeholderTabs = [
     url: 'http://janessa.net',
     title: 'Auto Loan Account',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 25,
@@ -207,6 +232,7 @@ const placeholderTabs = [
     url: 'http://tyree.info',
     title: 'Books invoice',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 26,
@@ -215,6 +241,7 @@ const placeholderTabs = [
     url: 'https://mallie.net',
     title: 'Sausages',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 27,
@@ -223,6 +250,7 @@ const placeholderTabs = [
     url: 'http://agustin.music',
     title: 'SMTP',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 28,
@@ -231,6 +259,7 @@ const placeholderTabs = [
     url: 'http://webster.info',
     title: 'Equatorial Guinea Zimbabwe Dollar',
     mutedInfo: {},
+    pinned: false,
   },
   {
     id: 29,
@@ -239,6 +268,7 @@ const placeholderTabs = [
     url: 'https://andres.biz',
     title: 'ubiquitous programming solid state',
     mutedInfo: {},
+    pinned: false,
   },
 ]
 

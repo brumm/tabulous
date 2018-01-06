@@ -2,6 +2,8 @@ import TBObject from 'store/TBObject'
 import defaultActionIcon from 'img/icon-action'
 import placeholderTabs from './placeholderTabs'
 import { uniqIds } from 'utils'
+import tabIcon from 'plugins/icon-tab'
+import windowIcon from 'plugins/icon-window'
 
 const TYPES = {
   TAB: 'browser.tab',
@@ -23,7 +25,7 @@ const tabResolver = directObject =>
           id: tab.id,
           name: tab.title,
           details: tab.url,
-          icon: tab.favIconUrl,
+          icon: tab.favIconUrl || tabIcon,
           type: [TYPES.TAB],
           meta: {
             pinned: tab.pinned,
@@ -73,10 +75,12 @@ const actions = [
         {
           name: `This Window`,
           details: '30 tabs',
+          icon: windowIcon,
           type: [TYPES.WINDOW],
         },
         {
           name: `New Window`,
+          icon: windowIcon,
           type: [TYPES.WINDOW],
         },
       ]),
