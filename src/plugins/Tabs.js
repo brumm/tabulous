@@ -17,6 +17,7 @@ import { uniqIds } from 'utils'
 const TYPES = {
   TAB: 'browser.tab',
   WINDOW: 'browser.window',
+  NEW_WINDOW: 'browser. new-window',
   URL: 'public.url',
 }
 
@@ -77,7 +78,7 @@ const actions = [
     details: 'Move to another window',
     icon: defaultActionIcon,
     directTypes: [TYPES.TAB],
-    indirectTypes: [TYPES.WINDOW],
+    indirectTypes: [TYPES.WINDOW, TYPES.NEW_WINDOW],
     suggestedObjects: () =>
       getWindows().then(windows => [
         ...windows.map(({ id, ..._window }, index) => ({
@@ -91,13 +92,11 @@ const actions = [
         {
           name: `New Window`,
           icon: windowIcon,
-          type: [TYPES.WINDOW],
+          type: [TYPES.NEW_WINDOW],
         },
       ]),
-    execute: (tabs, { id: windowId }) => {
-      if (windowId) {
-        moveTabs(tabs.map(({ id }) => id), { windowId, index: -1 })
-      } else {
+    execute: (tabs, { type }) => {
+      if (type.includes(TYPES.NEW_WINDOW)) {
         const [{ id: tabId }, ...secondBatchOfTabIds] = tabs
         createWindow({ tabId }).then(({ id }) => {
           if (secondBatchOfTabIds.length) {
@@ -107,6 +106,8 @@ const actions = [
             })
           }
         })
+      } else {
+        moveTabs(tabs.map(({ id }) => id), { windowId, index: -1 })
       }
     },
   },
