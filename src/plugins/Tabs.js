@@ -95,7 +95,7 @@ const actions = [
           type: [TYPES.NEW_WINDOW],
         },
       ]),
-    execute: (tabs, { type }) => {
+    execute: (tabs, { type, id: windowId }) => {
       if (type.includes(TYPES.NEW_WINDOW)) {
         const [{ id: tabId }, ...secondBatchOfTabIds] = tabs
         createWindow({ tabId }).then(({ id }) => {
