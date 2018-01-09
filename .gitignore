@@ -1,6 +1,7 @@
 node_modules
 build
 secrets.*.js
-build.pem
-build.crx
-build.zip
+tabulous.pem
+tabulous.crx
+tabulous.zip
+updates.xml

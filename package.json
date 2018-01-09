@@ -4,7 +4,8 @@
   "description": "Filter, activate, select or close one or multiple tabs across windows --- all with your keyboard.",
   "scripts": {
     "release": "npm run bump && npm run build && npm run zip",
-    "build": "NODE_ENV='production' node utils/build.js",
+    "build": "NODE_ENV='production' EXT_ENV='cws' node utils/build.js",
+    "build-crx": "NODE_ENV='production' EXT_ENV='crx' node utils/build.js",
     "start": "node utils/webserver.js",
     "zip": "zip -r -j build ./build",
     "bump": "npm version patch -m '%s'"
@@ -49,6 +50,7 @@
     "babel-preset-react-hmre": "^1.1.1",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.3",
+    "crx-webpack-plugin": "^0.1.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.5",
     "fs-extra": "^4.0.2",

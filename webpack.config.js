@@ -1,11 +1,12 @@
-const webpack = require('webpack'),
-  path = require('path'),
-  fileSystem = require('fs'),
-  env = require('./utils/env'),
-  CleanWebpackPlugin = require('clean-webpack-plugin'),
-  CopyWebpackPlugin = require('copy-webpack-plugin'),
-  HtmlWebpackPlugin = require('html-webpack-plugin'),
-  WriteFilePlugin = require('write-file-webpack-plugin')
+const webpack = require('webpack')
+const path = require('path')
+const fileSystem = require('fs')
+const env = require('./utils/env')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin')
+var Crx = require('crx-webpack-plugin')
 
 // load the secrets
 const alias = {}
@@ -88,18 +89,22 @@ const options = {
       {
         from: 'src/manifest.json',
         transform: function(content, path) {
-          // generates the manifest file using the package.json informations
-          return Buffer.from(
-            JSON.stringify({
-              description: process.env.npm_package_description,
-              version: process.env.npm_package_version,
-              ...JSON.parse(content.toString()),
-              content_security_policy:
-                env.NODE_ENV === 'development'
-                  ? "script-src 'self' 'unsafe-eval' https://cdn.ravenjs.com; object-src 'self'"
-                  : "script-src 'self' https://cdn.ravenjs.com; object-src 'self'",
-            })
-          )
+          let manifest = {
+            description: process.env.npm_package_description,
+            version: process.env.npm_package_version,
+            ...JSON.parse(content.toString()),
+            content_security_policy:
+              env.NODE_ENV === 'development'
+                ? "script-src 'self' 'unsafe-eval' https://cdn.ravenjs.com; object-src 'self'"
+                : "script-src 'self' https://cdn.ravenjs.com; object-src 'self'",
+          }
+          if (process.env.EXT_ENV === 'crx') {
+            manifest = {
+              ...manifest,
+              update_url: 'http://myhost.com/mytestextension/updates.xml',
+            }
+          }
+          return Buffer.from(JSON.stringify(manifest))
         },
       },
     ]),
@@ -119,6 +124,17 @@ const options = {
     }),
     new WriteFilePlugin(),
   ],
+}
+
+if (process.env.EXT_ENV === 'crx') {
+  options.plugins.push(
+    new Crx({
+      keyFile: path.join(__dirname, 'tabulous.pem'),
+      contentPath: 'build',
+      outputPath: __dirname,
+      name: 'tabulous',
+    })
+  )
 }
 
 module.exports = options
