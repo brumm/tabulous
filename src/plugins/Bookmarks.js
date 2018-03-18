@@ -139,8 +139,8 @@ const actions = [
       ),
   },
   {
-    name: 'Create New Session...',
-    details: 'Create bookmarks in folder for this',
+    name: 'Save as Bookmarks...',
+    details: 'Create bookmarks in folder for these tabs',
     icon: defaultActionIcon,
     directTypes: [TYPES.URL],
     indirectTypes: [TYPES.TEXT_MODE],
