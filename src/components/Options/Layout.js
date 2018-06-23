@@ -23,6 +23,7 @@ export const FakeToolbar = glamorous.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  overflow: 'visible',
 })
 
 export const FakeToolbarIcon = glamorous.div({
@@ -34,6 +35,10 @@ export const FakeToolbarIcon = glamorous.div({
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center 40%',
   backgroundSize: '75%',
+  border: '1px solid white',
+  boxShadow: `
+    0 0 70px white
+  `,
 })
 
 export const FakePopupFrame = glamorous.div({

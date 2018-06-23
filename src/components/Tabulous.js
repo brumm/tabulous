@@ -148,6 +148,10 @@ export default class Tabulous extends React.Component {
           onCombo={({ event }) => {
             event.preventDefault()
             sources.execute(markedItemIds)
+            activeSource.setIndex(0)
+            this.setState({
+              activePaneIndex: 0,
+            })
           }}
         />
         <ComboKeys

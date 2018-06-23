@@ -33,6 +33,8 @@ const Toasts = glamorous.div({
   pointerEvents: 'none',
   padding: 10,
   bottom: 0,
+  display: 'flex',
+  flexDirection: 'column-reverse',
 })
 
 const Toast = glamorous.div({
@@ -85,9 +87,9 @@ export default class Options extends React.Component {
 
   addCommand(command) {
     this.setState(({ commands }) => ({
-      commands: [...commands, command],
+      commands: [command, ...commands],
     }))
-    setTimeout(() => this.removeCommand(command.id), 2000)
+    setTimeout(() => this.removeCommand(command.id), 4000)
   }
 
   removeCommand(id) {
@@ -153,6 +155,7 @@ export default class Options extends React.Component {
                 ({ id, directObject, actionObject, indirectObject }, index) => (
                   <div
                     style={{
+                      transform: `scale(${1 / (index + 1)})`,
                       display: 'flex',
                       justifyContent: 'center',
                       padding: 5,

@@ -11,7 +11,7 @@ export default class TBCatalog {
   @observable _items = []
   @observable input = undefined
   @observable searchTerm = []
-  browsingHistory = []
+  history = []
 
   constructor(sources) {
     this.sources = sources
@@ -87,11 +87,11 @@ export default class TBCatalog {
 
   @action
   browseToParent() {
-    if (this.browsingHistory.length) {
-      const { sources, index, searchTerm } = this.browsingHistory.pop()
+    if (this.history.length) {
+      const { sources, index, searchTerm } = this.history.pop()
       this.sources = sources
       this.refreshSources({
-        forceHideSourceItem: this.browsingHistory.length !== 0,
+        forceHideSourceItem: this.history.length !== 0,
       })
       this.index = index
       this.searchTerm = searchTerm
@@ -100,7 +100,7 @@ export default class TBCatalog {
 
   @action
   browseToChildren() {
-    this.browsingHistory.push({
+    this.history.push({
       sources: this.sources,
       index: this.index,
       searchTerm: this.searchTerm,
@@ -131,6 +131,11 @@ export default class TBCatalog {
         this._items = items
           .reduce((collection, item) => collection.concat(item), [])
           .map(item => (item instanceof TBObject ? item : new TBObject(item)))
+
+        if (this._items.length === 0 && this.history.length !== 0) {
+          this.browseToParent()
+        }
+
         this.loading = false
         if (
           (previousSelectedId || this.selected.id) &&

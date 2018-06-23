@@ -25,7 +25,11 @@ export const PaneWrapper = glamorous.div(({ active, theme }) => ({
 }))
 
 const AutoSelectInput = props => (
-  <Input innerRef={node => node && node.select()} {...props} />
+  <Input
+    innerRef={node => node && node.select()}
+    {...props}
+    style={{ width: '100%' }}
+  />
 )
 
 export const Pane = ({ active, item }) => (
