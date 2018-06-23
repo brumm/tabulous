@@ -36,6 +36,7 @@ if (fileSystem.existsSync(secretsPath)) {
 }
 
 const options = {
+  mode: env.NODE_ENV,
   devtool: env.NODE_ENV === 'development' && 'cheap-module-eval-source-map',
   entry: {
     popup: path.join(__dirname, 'src', 'popup.js'),

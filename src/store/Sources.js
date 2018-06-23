@@ -1,4 +1,4 @@
-import { observe, observable, useStrict } from 'mobx'
+import { observe, observable, configure } from 'mobx'
 
 import { onRemoved, onCreated, onUpdated, onMoved } from 'browser-api'
 import TBObject from './TBObject'
@@ -10,7 +10,9 @@ import {
   suggestedIndirectObjectsForActionObject,
 } from './plumbing'
 
-useStrict(true)
+configure({
+  enforceActions: true,
+})
 
 class Sources {
   @observable directObjects = undefined

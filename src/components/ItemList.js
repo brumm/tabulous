@@ -30,7 +30,7 @@ export const Item = inject('settings')(
       index,
       hideChevron,
       hasChildren,
-      setIndex,
+      setIndex = () => {},
     }) => (
       <Div
         display="flex"

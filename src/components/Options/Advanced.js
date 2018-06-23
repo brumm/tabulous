@@ -180,7 +180,6 @@ export default () => (
                         hideChevron
                         name={source.name}
                         icon={source.icon}
-                        setIndex={console.log}
                       />
                     </ItemWrapper>
 
