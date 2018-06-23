@@ -45,7 +45,7 @@ export default class TBCatalog {
   }
 
   @action
-  setIndex(index) {
+  setIndex = index => {
     this.index = index
   }
 

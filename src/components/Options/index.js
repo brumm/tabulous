@@ -3,7 +3,8 @@ import { Route } from 'react-router-dom'
 import { position } from 'polished'
 import { observer } from 'mobx-react'
 import SwipeableViews from 'react-swipeable-views'
-import { transparentize } from 'polished'
+import { transparentize, margin, padding } from 'polished'
+import glamorous from 'glamorous'
 
 import { initialState } from 'store/Settings'
 import Tabulous from 'components/Tabulous'
@@ -27,8 +28,74 @@ import {
 
 export const AVAILABLE_TABS = ['intro', 'shortcuts', 'appearance', 'advanced']
 
+const Toasts = glamorous.div({
+  position: 'absolute',
+  pointerEvents: 'none',
+  padding: 10,
+  bottom: 0,
+})
+
+const Toast = glamorous.div({
+  display: 'inline-flex',
+  padding: 10,
+  backgroundColor: '#fff',
+  borderRadius: 200,
+  boxShadow: `
+    0 0 0 0.5px rgba(0, 0, 0, 0.1),
+    0 1px 10px rgba(0, 0, 0, 0.1)
+  `,
+  '& + &': {
+    marginTop: 10,
+  },
+})
+
+const TBObject = glamorous.span(({ index = 0 }) => ({
+  fontSize: 15,
+  verticalAlign: 'middle',
+  borderRadius: 50,
+  maxWidth: '25vw',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  backgroundColor: ['#fff7bd', '#E1F5FE', '#DCEDC8'][index],
+  ...padding(5, 13, 6),
+  boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1) inset',
+  '&:not(:last-child)': {
+    marginRight: 10,
+  },
+}))
+
 @observer
 export default class Options extends React.Component {
+  state = {
+    commands: [],
+  }
+
+  constructor(props) {
+    super(props)
+    props.sources.constructor.prototype.execute = () =>
+      this.addCommand({
+        id: Math.random()
+          .toString(36)
+          .substring(2, 15),
+        directObject: sources.directObjects.selected.name,
+        actionObject: sources.actionObjects.selected.name,
+        indirectObject: sources.indirectObjects.selected.name,
+      })
+  }
+
+  addCommand(command) {
+    this.setState(({ commands }) => ({
+      commands: [...commands, command],
+    }))
+    setTimeout(() => this.removeCommand(command.id), 2000)
+  }
+
+  removeCommand(id) {
+    this.setState(({ commands }) => ({
+      commands: commands.filter(command => id !== command.id),
+    }))
+  }
+
   render() {
     const {
       activeTab,
@@ -50,7 +117,13 @@ export default class Options extends React.Component {
 
     return (
       <Container>
-        <Panel>
+        <Panel
+          style={{
+            backgroundImage: `
+            linear-gradient(45deg, #8360c3, #2ebf91)
+          `,
+          }}
+        >
           <div
             style={{
               position: 'relative',
@@ -74,6 +147,29 @@ export default class Options extends React.Component {
                 />
               </FakePopupFrame>
             </div>
+
+            <Toasts>
+              {this.state.commands.map(
+                ({ id, directObject, actionObject, indirectObject }, index) => (
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      padding: 5,
+                    }}
+                    key={id}
+                  >
+                    <Toast>
+                      <TBObject index={0}>{directObject}</TBObject>
+                      <TBObject index={1}>{actionObject}</TBObject>
+                      {indirectObject && (
+                        <TBObject index={2}>{indirectObject}</TBObject>
+                      )}
+                    </Toast>
+                  </div>
+                )
+              )}
+            </Toasts>
           </div>
         </Panel>
 

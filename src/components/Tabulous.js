@@ -246,6 +246,7 @@ export default class Tabulous extends React.Component {
           height={listHeight}
           itemHeight={listItemHeight}
           selectedIndex={activeSource.index}
+          setIndex={activeSource.setIndex}
           style={{ backgroundColor: '#fafafa', borderRadius: '0 0 2px 2px' }}
         />
       </Container>

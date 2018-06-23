@@ -68,8 +68,12 @@ class Settings {
       action(() => {
         this.needsSave = false
       }),
-      () => {
-        debugger
+      error => {
+        if (process.env.NODE_ENV === 'production') {
+          Raven.captureException(error, { extra: { settings } })
+        } else {
+          console.error(error)
+        }
       }
     )
   }

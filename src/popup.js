@@ -10,7 +10,6 @@ import 'img/icon-128.png'
 import React from 'react'
 import { render } from 'react-dom'
 import glamorous, { ThemeProvider } from 'glamorous'
-import delay from 'delay'
 import { Provider } from 'mobx-react'
 
 import { getCurrentTab, storageGet } from 'browser-api'
@@ -22,17 +21,14 @@ import { initialState } from 'store/Settings'
 import Tabs from 'plugins/Tabs'
 import Bookmarks from 'plugins/Bookmarks'
 import RecentlyClosed from 'plugins/RecentlyClosed'
+import Extensions from 'plugins/Extensions'
 
-Promise.all([
-  getCurrentTab(),
-  storageGet(),
-  // the chrome extension window collapses to a tiny size
-  // if we render immediately, so we'll delay by a bit :/
-  delay(70),
-]).then(([{ index }, settings]) => {
+Promise.all([getCurrentTab(), storageGet()]).then(([{ index }, settings]) => {
   settings = Object.assign(initialState, settings)
   const sources = (window.sources = new Sources(
-    settings.advancedMode ? [Tabs, Bookmarks, RecentlyClosed] : [Tabs]
+    settings.advancedMode
+      ? [Tabs, Bookmarks, RecentlyClosed, Extensions]
+      : [Tabs]
   ))
   sources.directObjects.setIndex(index)
   render(

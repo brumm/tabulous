@@ -39,45 +39,29 @@ export const FakeToolbarIcon = glamorous.div({
 export const FakePopupFrame = glamorous.div({
   position: 'relative',
   overflow: 'visible',
-  top: -4,
+  top: -3,
   borderRadius: 2,
   border: '1px solid #fff',
   minHeight: 20,
   backgroundColor: '#fff',
   minWidth: 100,
   filter: `
-    drop-shadow(0 0px 5px rgba(0, 0, 0, 0.1))
-    drop-shadow(0 10px 10px rgba(0, 0, 0, 0.1))
-  `,
-  boxShadow: `
-    0 0 0 1px rgba(0, 0, 0, 0.15)
+    drop-shadow(0 0px 0.5px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 1px 4px rgba(0, 0, 0, 0.1))
+    drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15))
   `,
   ':after': {
     content: "''",
     position: 'absolute',
     bottom: '100%',
-    left: '50%',
+    left: 'calc(50% + 1px)',
     transform: 'translateX(-50%)',
     marginBottom: 1,
     ...triangle({
       pointingDirection: 'top',
-      width: 16,
+      width: 17,
       height: 9,
       foregroundColor: 'white',
-    }),
-  },
-  ':before': {
-    content: "''",
-    position: 'absolute',
-    bottom: '100%',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    marginBottom: 2,
-    ...triangle({
-      pointingDirection: 'top',
-      width: 18,
-      height: 10,
-      foregroundColor: 'rgba(0, 0, 0, 0.15)',
     }),
   },
 })

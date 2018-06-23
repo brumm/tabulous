@@ -19,7 +19,6 @@
     "bracketSpacing": true
   },
   "dependencies": {
-    "delay": "^2.0.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.0",
     "key-event-to-string": "^1.1.1",
@@ -29,9 +28,11 @@
     "mobx-react": "^4.3.5",
     "polished": "^1.9.0",
     "proptypes": "^1.1.0",
-    "react": "^16.2.0",
+    "react": "^16.4.1",
+    "react-collapse": "^4.0.3",
     "react-combokeys": "^0.1.0",
     "react-dom": "^16.2.0",
+    "react-motion": "^0.5.2",
     "react-promise": "^2.0.0",
     "react-router-dom": "^4.2.2",
     "react-swipeable-views": "^0.12.12",

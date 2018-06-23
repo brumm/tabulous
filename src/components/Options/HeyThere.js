@@ -22,7 +22,7 @@ const H1 = glamorous.h1({
   marginBottom: 20,
 })
 
-const Paragraph = glamorous.h1({
+const Paragraph = glamorous.div({
   lineHeight: '25px',
   fontSize: 17,
   marginBottom: 25,
